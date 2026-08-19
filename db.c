@@ -4,7 +4,6 @@
 #include <libpq-fe.h>
 #include "db.h"
 
-stDb_T_db_version T_db_version;
 stDb_T_sector T_sector[_CANT_MAX_EQ];
 stDb_T_devices T_devices[_CANT_MAX_EQ];
 
@@ -81,7 +80,6 @@ void Hex2Bin(uint8_t *pdat, uint8_t *pdest, uint8_t len)
 int _Init_dbread(void)
 {
     int ret = _DB_STS_OK;
-    memset((void*)&T_db_version, 0, sizeof(T_db_version));
     memset((void*)T_sector, 0, sizeof(T_sector));
     memset((void*)T_devices, 0, sizeof(T_devices));
     int r1 = _dbread_table_tableschema_sector();
@@ -239,64 +237,6 @@ int _dbread_table_tableschema_dev(void)
     return ret;
 }
 
-
-int _dbread_table_version(void) 
-{
-    int ret = 0;
-    // Connect to the database
-    PGconn *conn = PQconnectdb(_DB_ADDRESS);
-    if (PQstatus(conn) != CONNECTION_OK) 
-    {
-        fprintf(stderr, "Connection to database failed: %s", PQerrorMessage(conn));
-        PQfinish(conn);
-        return _DB_STS_ERR_CONN;
-    }
-
-    // Execute SQL query
-    PGresult *res = PQexec(conn, "SELECT * FROM db_version");
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) 
-    {
-        fprintf(stderr, "Query execution failed: %s", PQerrorMessage(conn));
-        PQclear(res);
-        PQfinish(conn);
-        return _DB_STS_ERR_CMD;
-    }
-
-    // Print the query result
-    int rows = PQntuples(res);
-    if(rows == 1)
-    {
-        int cols = PQnfields(res);
-        if(cols == _MAXCOLSDBVERSION)
-            for (int i = 0; i < rows; i++) 
-            {
-                for (int j = 0; j < cols; j++) 
-                {
-#ifdef _DEBUG_DB_READ
-                    printf("%s\t", PQgetvalue(res, i, j));
-#endif                
-                }
-#ifdef _DEBUG_DB_READ                
-                printf("\n");
-#endif            
-            }
-        else 
-        {
-            printf("[_dbread_table_version] Error! (%d)\r\n", cols);
-            ret = _DB_STS_ERR_STRUCT;
-        }
-    }       
-    else
-    {
-        printf("[_dbread_table_version] Error! = Multi-Version (%d)\r\n", rows);
-        ret = _DB_STS_ERR_STRUCT;
-    }
-    // Clean up
-    PQclear(res);
-    PQfinish(conn);
-
-    return ret;
-}
 
 int _dbread_table_sector(void) 
 {
@@ -609,7 +549,6 @@ int _dbread_bulk(void)
 {
     int ret = 0;
     
-    ret |= _dbread_table_version();
     ret |= _dbread_table_sector(); 
     ret |= _dbread_table_devices();
    
@@ -634,16 +573,6 @@ stDb_T_devices *_Stfind_Hubid(uint8_t *peqid, uint8_t eqlen)
     return 0;
 }
 
-/*
-stDb_T_municipalities *_Stfind_muni(uint32_t mid)
-{
-    for(int x = 0; x < _CANT_MAX_EQ; x++)
-        if((T_municipalities[x].id == mid) && mid)
-            return &T_municipalities[x];
-    
-    return 0;
-}
-*/
 
 uint8_t *_Findtargetfolder(uint8_t *peqid, uint8_t eqlen)
 {

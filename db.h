@@ -26,13 +26,6 @@ typedef enum
     _DB_STS_ERR_DBLAYOUT,
 }eerrmsg;
 
-typedef struct
-{
-    uint8_t Id;
-    uint8_t version[3];
-}stDb_T_db_version;
-#define _MAXCOLSDBVERSION    2
-
 /*
 typedef struct
 {
@@ -92,7 +85,6 @@ typedef struct
 int _Init_dbread(void);
 int _dbread_table_tableschema_sector(void);
 int _dbread_table_tableschema_dev(void);
-int _dbread_table_version(void);
 int _dbread_table_muni(void);
 int _dbread_table_devices(void); 
 int _dbread_bulk(void);

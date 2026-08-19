@@ -745,7 +745,7 @@ int main(void)
     stDb_T_deviceevent event;
 
 
-    int ret = _dbread_deviceevent(35, &event);
+    int ret = _dbread_deviceevent(1, &event);
 
     if (ret == _DB_STS_OK)
     {

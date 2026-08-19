@@ -10,7 +10,8 @@
 #define _TEST_DB
 
 //#define _TEST_DB_DEVSTATE
-#define _TEST_DB_DEVEVENT
+//#define _TEST_DB_DEVEVENT
+#define _TEST_DB_VERSION
 
 /*--------------------------------------------------------------------------------------------------------------*/
 

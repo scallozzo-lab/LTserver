@@ -7,6 +7,7 @@
 
 
 stDb_T_devstate T_devstate[_CANT_MAX_EQ];
+stDb_T_devstate_info devstate_info;
 
 
 int _dbread_devstate_size(void)
@@ -594,6 +595,171 @@ int _dbwrite_devstate(stDb_T_devstate *pdev)
 
     return _DB_STS_OK;
 }
+
+
+int _dbcheck_devstate(stDb_T_devstate_info *info)
+{
+    if (info == NULL)
+        return _DB_STS_ERR_STRUCT;
+
+    PGconn *conn = PQconnectdb(_DB_ADDRESS);
+
+    if (PQstatus(conn) != CONNECTION_OK)
+    {
+        fprintf(stderr,
+                "[_dbcheck_devstate] Connection failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbcheck_devstate] Connection failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CONN;
+    }
+
+
+    const char *query =
+        "SELECT COUNT(*), "
+        "       MAX(updated_at) "
+        "FROM devstate";
+
+
+    PGresult *res = PQexec(conn, query);
+
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK)
+    {
+        fprintf(stderr,
+                "[_dbcheck_devstate] Query failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbcheck_devstate] Query failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CMD;
+    }
+
+
+    if (PQntuples(res) != 1 ||
+        PQnfields(res) != 2)
+    {
+        printf("[_dbcheck_devstate] Invalid result\n");
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_STRUCT;
+    }
+
+
+    /*
+     * ---------------------------------------------
+     * COUNT(*)
+     * ---------------------------------------------
+     */
+
+    int db_count = 0;
+
+    if (!PQgetisnull(res, 0, 0))
+    {
+        db_count = atoi(PQgetvalue(res, 0, 0));
+    }
+
+
+    /*
+     * ---------------------------------------------
+     * MAX(updated_at)
+     * ---------------------------------------------
+     */
+
+    char db_last_update[32];
+
+    memset(db_last_update, 0, sizeof(db_last_update));
+
+    if (!PQgetisnull(res, 0, 1))
+    {
+        strncpy(db_last_update,
+                PQgetvalue(res, 0, 1),
+                sizeof(db_last_update) - 1);
+    }
+
+
+#ifdef _DEBUG_DB_READ
+
+    printf("\n[_dbcheck_devstate]\n");
+    printf("  DB count       : %d\n", db_count);
+    printf("  DB last_update : %s\n", db_last_update);
+    printf("  RAM count      : %d\n", info->count);
+    printf("  RAM last_update: %s\n", info->last_update);
+
+#endif
+
+
+    /*
+     * ---------------------------------------------
+     * Comparar contra el estado conocido en RAM
+     * ---------------------------------------------
+     */
+
+    int changed = 0;
+
+    if (db_count != info->count)
+    {
+        changed = 1;
+    }
+    else if (strcmp(db_last_update,
+                    info->last_update) != 0)
+    {
+        changed = 1;
+    }
+
+
+    /*
+     * Si hubo cambios, actualizamos la información
+     * conocida por RAM.
+     */
+    if (changed)
+    {
+        info->count = db_count;
+
+        strncpy(info->last_update,
+                db_last_update,
+                sizeof(info->last_update) - 1);
+
+        info->last_update[
+            sizeof(info->last_update) - 1
+        ] = '\0';
+
+
+#ifdef _DEBUG_DB_READ
+
+        printf("  --> DEVSTATE CHANGED\n");
+
+#endif
+
+    }
+
+
+    PQclear(res);
+    PQfinish(conn);
+
+
+    return changed ?
+           _DB_DEVSTATE_CHANGED :
+           _DB_DEVSTATE_NOCHANGE;
+}
+
+void _InitDb_devstate(void)
+{
+    memset(&devstate_info, 0, sizeof(devstate_info));
+    _dbread_table_devstate();
+    devstate_info.count = _dbread_devstate_size();
+}
+
 
 #ifdef _TEST_DB_DEVSTATE
 

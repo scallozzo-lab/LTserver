@@ -1,15 +1,14 @@
-[2026-08-19 12:49:13] [_dbwrite_devstate] Query execution failed: ERROR:  invalid input syntax for type timestamp: ""
-CONTEXT:  unnamed portal parameter $10 = ''
-
-[2026-08-19 13:05:07] [_dbwrite_devstate] Query execution failed: ERROR:  invalid input syntax for type timestamp: ""
-CONTEXT:  unnamed portal parameter $10 = ''
-
-[2026-08-19 13:07:33] [_dbwrite_devstate] Query execution failed: ERROR:  syntax error at or near "street_name"
-LINE 1: ...rature_c = $8, burn_hours = $9, last_seen = NOW() street_nam...
-                                                             ^
-
-[2026-08-19 13:07:46] [_dbwrite_devstate] Query execution failed: ERROR:  could not determine data type of parameter $10
-
-[2026-08-19 13:58:47] [_dbinsert_deviceevent] INSERT failed: ERROR:  invalid input value for enum event_type_enum: "alarm"
-CONTEXT:  unnamed portal parameter $3 = '...'
-
+[2026-08-19 15:10:02] RCServer Version 0.3
+[2026-08-19 15:10:02] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
+[2026-08-19 15:10:02] [_LoadNetHubBin] Tamaño: 25108 bytes
+[2026-08-19 15:10:02] [_LoadNetHubBin] FW.Header->
+[2026-08-19 15:10:02] len 00006214
+[2026-08-19 15:10:02] signature D643F812
+[2026-08-19 15:10:02] FW.Header crc calc D643F812
+[2026-08-19 15:10:02] [_LoadNetHubBin] Firmware NetHUB V1.6 (FWH) OK
+[2026-08-19 15:10:03] [_dbread_table_tableschema_sector] Error! MAX(0)
+[2026-08-19 15:10:03] [_dbread_table_tableschema_devices] Error! MAX(0)
+[2026-08-19 15:10:03] [_InitRCServer] Error Acceso DB
+[2026-08-19 15:10:13] [_dbread_table_tableschema_sector] Error! MAX(0)
+[2026-08-19 15:10:13] [_dbread_table_tableschema_devices] Error! MAX(0)
+[2026-08-19 15:10:13] [_InitRCServer] Error Acceso DB
