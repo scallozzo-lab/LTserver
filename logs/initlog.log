@@ -1,0 +1,19 @@
+[2026-08-18 21:56:50] RCServer Version 1.3
+[2026-08-18 21:56:50] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
+[2026-08-18 21:56:50] [_LoadNetHubBin] Tamaño: 25108 bytes
+[2026-08-18 21:56:50] [_LoadNetHubBin] FW.Header->
+[2026-08-18 21:56:50] len 00006214
+[2026-08-18 21:56:50] signature D643F812
+[2026-08-18 21:56:50] FW.Header crc calc D643F812
+[2026-08-18 21:56:50] [_LoadNetHubBin] Firmware NetHUB V1.6 (FWH) OK
+[2026-08-18 21:56:50] RCServer activo puerto: 5000...
+[2026-08-18 21:56:50] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:00] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:10] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:20] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:31] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:41] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:57:51] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:58:01] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+[2026-08-18 21:58:11] [_Proc10msFuncs] ERROR-> Falla acceso DB redcam
+
