@@ -42,5 +42,6 @@ extern stDb_T_devstate T_devstate[_CANT_MAX_EQ];
 
 int _dbread_devstate_size(void);
 int _dbread_table_devstate(void);
+int _dbwrite_devstate(stDb_T_devstate *pdev);
 
 #endif

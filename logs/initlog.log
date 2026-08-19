@@ -1,0 +1,12 @@
+[2026-08-19 12:49:13] [_dbwrite_devstate] Query execution failed: ERROR:  invalid input syntax for type timestamp: ""
+CONTEXT:  unnamed portal parameter $10 = ''
+
+[2026-08-19 13:05:07] [_dbwrite_devstate] Query execution failed: ERROR:  invalid input syntax for type timestamp: ""
+CONTEXT:  unnamed portal parameter $10 = ''
+
+[2026-08-19 13:07:33] [_dbwrite_devstate] Query execution failed: ERROR:  syntax error at or near "street_name"
+LINE 1: ...rature_c = $8, burn_hours = $9, last_seen = NOW() street_nam...
+                                                             ^
+
+[2026-08-19 13:07:46] [_dbwrite_devstate] Query execution failed: ERROR:  could not determine data type of parameter $10
+
