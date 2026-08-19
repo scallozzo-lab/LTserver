@@ -10,3 +10,6 @@ LINE 1: ...rature_c = $8, burn_hours = $9, last_seen = NOW() street_nam...
 
 [2026-08-19 13:07:46] [_dbwrite_devstate] Query execution failed: ERROR:  could not determine data type of parameter $10
 
+[2026-08-19 13:58:47] [_dbinsert_deviceevent] INSERT failed: ERROR:  invalid input value for enum event_type_enum: "alarm"
+CONTEXT:  unnamed portal parameter $3 = '...'
+

@@ -2,15 +2,15 @@
 /*
  Servidor LTserver  
  Autor: SCALLOZZO                                                                 
-                                                                                  
- 
-    Ver 0.1 [25.07.2025] SCallozzo
-    * Se migra version desde REDCAM
+  
+    Ver 0.3 [19.08.2026] SCallozzo
+    * Se comienza a agregar lectura y escritura de tablas
 
     Ver 0.2 [26.09.2025] SCallozzo
     * Se comienza adaptación de lectura de tablas (sector + devices)
 
-
+    Ver 0.1 [25.07.2025] SCallozzo
+    * Se migra version desde REDCAM
 */                                                                                              
 //-------------------------------------------------------------------------------------------------------------------------------------------//
 

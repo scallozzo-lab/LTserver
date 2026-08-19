@@ -8,10 +8,13 @@
 /*---------------------------Opciones de Compilación -----------------------------------------------------------*/
 //#define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
 #define _TEST_DB
-#define _TEST_DB_DEVSTATE
+
+//#define _TEST_DB_DEVSTATE
+#define _TEST_DB_DEVEVENT
+
 /*--------------------------------------------------------------------------------------------------------------*/
 
-#define _VERSION            "1.3"
+#define _VERSION            "0.3"
 #define _LOGOUTPUTNAME      "./logs/initlog.log"
 #define DEST_DNS_NAME       "redcamserver.ddns.net"
 #define _LENFILENAME        (23 + 1) 
