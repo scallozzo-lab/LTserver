@@ -7,7 +7,8 @@
 
 /*---------------------------Opciones de Compilación -----------------------------------------------------------*/
 //#define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
-
+#define _TEST_DB
+#define _TEST_DB_DEVSTATE
 /*--------------------------------------------------------------------------------------------------------------*/
 
 #define _VERSION            "1.3"

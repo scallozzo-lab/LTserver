@@ -686,11 +686,12 @@ void _Proc10msFuncs(void)
     if(RCServer.dbreadtim) RCServer.dbreadtim--;
     else
     {
+        int r = _dbread_bulk();
         // Lee en forma masiva base de datos, si devolvió error...
-        if(_dbread_bulk())
+        if(r)
         {
-            printf("[_Proc10msFuncs] Falla acceso DB redcam\n");   
-            _log("[_Proc10msFuncs] ERROR-> Falla acceso DB redcam\n\r");
+            printf("[_Proc10msFuncs] Falla acceso DB ltdb %d\n", r);   
+            _log("[_Proc10msFuncs] ERROR-> Falla acceso DB ltdb %d\n\r", r);
         }   
         // test
         else
@@ -727,6 +728,7 @@ void _Proc10msFuncs(void)
     }
 }
 
+#ifndef _TEST_DB
 int main(void) 
 {
     int len, nbytes;
@@ -776,4 +778,4 @@ int main(void)
     close(sockfd);
     return 0;
 }
-
+#endif

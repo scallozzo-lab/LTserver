@@ -9,8 +9,9 @@
 
 #define _CANT_MAX_EQ    10000
 #define _CANT_MAX_HUB   (_CANT_MAX_EQ / 100)
-#define _DB_ADDRESS "host=localhost dbname=ltdb user=scallozzo password=italo5056"
+#define _DB_ADDRESS "host=localhost dbname=lumina user=postgres password=lumina"
 
+//#define _DB_ADDRESS "host=localhost dbname=ltdb user=scallozzo password=italo5056"
 //#define _DB_ADDRESS "host=localhost dbname=ltdb user=admin password=italo5056"
 //#define _DB_ADDRESS "host=localhost dbname=redcam user=admin password=italo5056"
 //#define _DB_ADDRESS "host=localhost dbname=iarnet user=iarnet password=!4rN3T!"

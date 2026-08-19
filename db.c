@@ -610,9 +610,9 @@ int _dbread_bulk(void)
     int ret = 0;
     
     ret |= _dbread_table_version();
-    ret |= _dbread_table_sector();
+    ret |= _dbread_table_sector(); 
     ret |= _dbread_table_devices();
-
+   
     return ret;
 }
 
