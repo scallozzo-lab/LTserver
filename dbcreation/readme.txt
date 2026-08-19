@@ -2,16 +2,16 @@ Para crear al base datos:
 
 psql -U postgres
 
-CREATE DATABASE ltdb;
+CREATE DATABASE lumina;
 
 \q
 
-psql -U postgres -d ltdb -f tablas_ltserver1p0.sql
+psql -U postgres -d lumina -f tablas_ltserver1p6.sql
 
 Luego para verificar la base de datos, ejecutar: 
 psql -U postgres 
 \l
-\c ltdb
+\c lumina
 \dt
 
 Dar acceso a todo:
@@ -27,9 +27,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE state TO scallozzo;
 --------------------------------------------------
 postgres=# \l
 postgres=# \l
-postgres=# \c ltdb
-You are now connected to database "ltdb" as user "postgres".
-ltdb=# \dt
+postgres=# \c lumina
+You are now connected to database "lumina" as user "postgres".
+lumina=# \dt
            List of relations
  Schema |    Name    | Type  |  Owner   
 --------+------------+-------+----------
@@ -38,7 +38,7 @@ ltdb=# \dt
  public | sector     | table | postgres
 (3 rows)
 
-ltdb=# 
+lumina=# 
 
 
 
