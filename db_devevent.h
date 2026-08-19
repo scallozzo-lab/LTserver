@@ -58,6 +58,9 @@ typedef struct
 
 
 
+extern enum eDbDeviceEventSeverity;
+
+
 int _dbread_deviceevent(int64_t id,
                         stDb_T_deviceevent *event);
 

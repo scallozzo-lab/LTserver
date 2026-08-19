@@ -12,3 +12,4 @@
 [2026-08-19 15:10:13] [_dbread_table_tableschema_sector] Error! MAX(0)
 [2026-08-19 15:10:13] [_dbread_table_tableschema_devices] Error! MAX(0)
 [2026-08-19 15:10:13] [_InitRCServer] Error Acceso DB
+[2026-08-19 15:26:34] [_dbread_alarm] Error! Columns (13)
