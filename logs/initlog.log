@@ -13,3 +13,9 @@
 [2026-08-19 15:10:13] [_dbread_table_tableschema_devices] Error! MAX(0)
 [2026-08-19 15:10:13] [_InitRCServer] Error Acceso DB
 [2026-08-19 15:26:34] [_dbread_alarm] Error! Columns (13)
+[2026-08-19 22:02:02] [_dbread_table_devices] Query execution failed: ERROR:  column "_uid" does not exist
+LINE 1: SELECT light_id, eqid, linkid, hubid, _uid, date_time, devty...
+                                              ^
+HINT:  Perhaps you meant to reference the column "devices.eqid" or the column "devices.hubid".
+
+[2026-08-19 22:05:44] [_dbread_table_devices] Error! Columns (22)

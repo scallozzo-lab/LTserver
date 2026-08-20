@@ -13,7 +13,9 @@
 //#define _TEST_DB_DEVEVENT
 //#define _TEST_DB_VERSION
 //#define _TEST_DB_ALARM
-#define _TEST_DB_ALARM_INSERT
+//#define _TEST_DB_ALARM_INSERT
+#define _TEST_DB_DEVICES
+
 /*--------------------------------------------------------------------------------------------------------------*/
 
 #define _VERSION            "0.3"
