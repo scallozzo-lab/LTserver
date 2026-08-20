@@ -1,8 +1,11 @@
-#ifndef DB_DEVICES_H
-    #define DB_DEVICES_H
+#ifndef __DB_DEVICES_H__
+    #define __DB_DEVICES_H__
 
 #include <stdbool.h>
-#include "db.h"
+//#include "db.h"
+
+#define _DB_DEVICES_CHANGED   1
+#define _DB_DEVICES_NOCHANGE  0
 
 typedef struct
 {
@@ -49,10 +52,20 @@ typedef struct
 } stDb_T_devices;
 
 
-extern stDb_T_devices T_devices[_CANT_MAX_EQ];
+typedef struct
+{
+    int count;
+    char last_update[32];
+
+} stDb_T_devices_info;
+
+
+extern stDb_T_devices T_devices[];
+extern stDb_T_devices_info devices_info;
 
 
 int _dbread_devices_size(void);
+int _dbcheck_devices(stDb_T_devices_info *info);
 
 stDb_T_devices *_Stfind_Devices(const char *light_id);
 

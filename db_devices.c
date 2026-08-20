@@ -8,6 +8,7 @@
 
 
 stDb_T_devices T_devices[_CANT_MAX_EQ];
+stDb_T_devices_info devices_info;
 
 
 /*
@@ -621,6 +622,231 @@ int _dbread_table_devices(void)
     return ret;
 }
 
+/*
+ * ---------------------------------------------------------
+ * Verifica si la tabla devices cambió
+ * ---------------------------------------------------------
+ *
+ * Comparamos:
+ *
+ *   1. Cantidad de registros
+ *   2. MAX(date_time)
+ *
+ * Si cualquiera de los dos cambia, consideramos que
+ * la tabla fue modificada.
+ *
+ * ---------------------------------------------------------
+ */
+int _dbcheck_devices(stDb_T_devices_info *info)
+{
+    if (info == NULL)
+        return _DB_STS_ERR_STRUCT;
+
+
+    PGconn *conn = PQconnectdb(_DB_ADDRESS);
+
+
+    /*
+     * -----------------------------------------------------
+     * Verificar conexión
+     * -----------------------------------------------------
+     */
+
+    if (PQstatus(conn) != CONNECTION_OK)
+    {
+        fprintf(stderr,
+                "[_dbcheck_devices] Connection failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbcheck_devices] Connection failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CONN;
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * Consulta
+     * -----------------------------------------------------
+     */
+
+    const char *query =
+        "SELECT COUNT(*), "
+        "       MAX(date_time) "
+        "FROM devices";
+
+
+    PGresult *res = PQexec(conn, query);
+
+
+    /*
+     * -----------------------------------------------------
+     * Verificar resultado
+     * -----------------------------------------------------
+     */
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK)
+    {
+        fprintf(stderr,
+                "[_dbcheck_devices] Query failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbcheck_devices] Query failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CMD;
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * Verificar estructura del resultado
+     * -----------------------------------------------------
+     */
+
+    if (PQntuples(res) != 1 ||
+        PQnfields(res) != 2)
+    {
+        printf("[_dbcheck_devices] Invalid result\n");
+
+        _log("[_dbcheck_devices] Invalid result\n");
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_STRUCT;
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * COUNT(*)
+     * -----------------------------------------------------
+     */
+
+    int db_count = 0;
+
+
+    if (!PQgetisnull(res, 0, 0))
+    {
+        db_count =
+            atoi(PQgetvalue(res, 0, 0));
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * MAX(date_time)
+     * -----------------------------------------------------
+     */
+
+    char db_last_update[32];
+
+    memset(db_last_update,
+           0,
+           sizeof(db_last_update));
+
+
+    if (!PQgetisnull(res, 0, 1))
+    {
+        strncpy(db_last_update,
+                PQgetvalue(res, 0, 1),
+                sizeof(db_last_update) - 1);
+
+        db_last_update[
+            sizeof(db_last_update) - 1
+        ] = '\0';
+    }
+
+
+#ifdef _DEBUG_DB_READ
+
+    printf("\n[_dbcheck_devices]\n");
+
+    printf("  DB count       : %d\n",
+           db_count);
+
+    printf("  DB last_update : %s\n",
+           db_last_update);
+
+    printf("  RAM count      : %d\n",
+           info->count);
+
+    printf("  RAM last_update: %s\n\n",
+           info->last_update);
+
+#endif
+
+
+    /*
+     * -----------------------------------------------------
+     * Comparar contra el estado conocido en RAM
+     * -----------------------------------------------------
+     */
+
+    int changed = 0;
+
+
+    if (db_count != info->count)
+    {
+        changed = 1;
+    }
+    else if (strcmp(db_last_update,
+                    info->last_update) != 0)
+    {
+        changed = 1;
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * Si hubo cambios, actualizar información RAM
+     * -----------------------------------------------------
+     */
+
+    if (changed)
+    {
+        info->count = db_count;
+
+
+        strncpy(info->last_update,
+                db_last_update,
+                sizeof(info->last_update) - 1);
+
+
+        info->last_update[
+            sizeof(info->last_update) - 1
+        ] = '\0';
+
+
+#ifdef _DEBUG_DB_READ
+
+        printf("  --> DEVICES CHANGED\n");
+
+#endif
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * Clean up
+     * -----------------------------------------------------
+     */
+
+    PQclear(res);
+    PQfinish(conn);
+
+
+    return changed ?
+           _DB_STS_CHANGED :
+           _DB_STS_OK;
+}
 
 /*
  * ---------------------------------------------------------
@@ -631,7 +857,12 @@ void _InitDb_devices(void)
 {
     memset(T_devices, 0, sizeof(T_devices));
 
+    memset(&devices_info, 0, sizeof(devices_info));
+
     _dbread_table_devices();
+
+    devices_info.count =
+        _dbread_devices_size();
 }
 
 

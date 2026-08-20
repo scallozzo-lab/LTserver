@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "db.h"
 
+#define _DB_DEVSTATE_NOCHANGE   0
+#define _DB_DEVSTATE_CHANGED    1
 
 typedef struct
 {
@@ -37,9 +39,6 @@ typedef struct
 
 } stDb_T_devstate;
 
-
-#define _DB_DEVSTATE_NOCHANGE   0
-#define _DB_DEVSTATE_CHANGED    1
 
 typedef struct
 {

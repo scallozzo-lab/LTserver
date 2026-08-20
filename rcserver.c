@@ -37,6 +37,7 @@ struct sockaddr_in servaddr, cliaddr;
 static unsigned char RxBuffer[_RXBUFFER_SIZE];
 static stBTxVFile BTxVFile[_MAXSTOREV];
 
+
 int _GetTimer1ms(void)
 {
     return clock() / (CLOCKS_PER_SEC / 1000);
@@ -686,7 +687,9 @@ void _Proc10msFuncs(void)
     if(RCServer.dbreadtim) RCServer.dbreadtim--;
     else
     {
-        int r = _dbread_bulk();
+        int rcheck = _dbcheck_devices(&devices_info);
+        int r = 0;
+        if(rcheck == _DB_DEVICES_CHANGED) r = _dbread_bulk();
         // Lee en forma masiva base de datos, si devolvió error...
         if(r)
         {
@@ -696,33 +699,8 @@ void _Proc10msFuncs(void)
         // test
         else
         {
-            uint8_t test[10] = {0x60,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99};
+            // Sino sin error de lectura...
 
-            
-            uint8_t *pfolder = _Findtargetfolder(test, sizeof(test));
-
-            if(pfolder)
-            {
-                printf("folder->%s\n",pfolder);    
-            }
-            else 
-                printf("not found\n");
-            /*
-            stDb_T_devices *peq = _Stfind_Eqid(test, sizeof(test));
-            
-            if(peq)
-            {
-                printf("peq->id %d\n", peq->id);    
-            }
-
-            stDb_T_municipalities *pst = _Stfind_muni(3);
-
-            if(pst)
-            {
-                printf("pst->%s\n", pst->name);
-                printf("folder->%s\n", pst->folder_name);        
-            }
-            */        
         }
         RCServer.dbreadtim = _TMAXDBREAD;
     }

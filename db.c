@@ -38,16 +38,9 @@ void Hex2Bin(uint8_t *pdat, uint8_t *pdest, uint8_t len)
 int _Init_dbread(void)
 {
     int ret = _DB_STS_OK;
-    /*
-    memset((void*)T_sector, 0, sizeof(T_sector));
-    memset((void*)T_devices, 0, sizeof(T_devices));
-    int r1 = _dbread_table_tableschema_sector();
-    int r2 = _dbread_table_tableschema_dev(); 
-    if (r1 == _DB_STS_ERR_DBLAYOUT || r2 == _DB_STS_ERR_DBLAYOUT) ret = _DB_STS_ERR_DBLAYOUT;
-    else if(r1) ret = r1;
-    else if(r2) ret = r2;
-    return ret;
-    */
+    _InitDb_devices();
+    _InitDb_devstate();
+    ret = _dbread_bulk();
 }
 
 
@@ -58,7 +51,7 @@ int _dbread_bulk(void)
     
     //ret |= _dbread_table_sector(); 
     ret |= _dbread_table_devices();
-   
+    ret |= _dbread_table_devstate();
     return ret;
 }
 

@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "rcserver.h"
+#include "db_devices.h"
 
 #define _DEBUG_DB_READ
 
@@ -19,6 +20,7 @@
 typedef enum
 {
     _DB_STS_OK   = 0,
+    _DB_STS_CHANGED,
     _DB_STS_ERR_CONN,
     _DB_STS_ERR_ACCESS,
     _DB_STS_ERR_STRUCT,
