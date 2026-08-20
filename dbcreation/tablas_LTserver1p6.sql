@@ -484,7 +484,7 @@ INSERT INTO devices (
     devconfig
 )
 VALUES
-('SL-001','00:00:00:00:00:01','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000001','Luminaria 001','LT-LED150','Av. San Martin','100','Av. San Martin y Calle 1','1650',-34.6037,-58.3816,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
+('SL-001','01:02:03:04:05:06','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000001','Luminaria 001','LT-LED150','Av. San Martin','100','Av. San Martin y Calle 1','1650',-34.6037,-58.3816,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-002','00:00:00:00:00:02','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000002','Luminaria 002','LT-LED150','Av. San Martin','200','Av. San Martin y Calle 2','1650',-34.6040,-58.3820,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-003','00:00:00:00:00:03','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000003','Luminaria 003','LT-LED150','Av. San Martin','300','Av. San Martin y Calle 3','1650',-34.6050,-58.3830,'Luminaria LED',2,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-004','00:00:00:00:00:04','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000004','Luminaria 004','LT-LED150','Av. San Martin','400','Av. San Martin y Calle 4','1650',-34.6060,-58.3840,'Luminaria LED',2,'Villa Ballester',1,TRUE,FALSE,0),

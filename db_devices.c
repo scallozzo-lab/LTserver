@@ -64,8 +64,19 @@ stDb_T_devices *_Stfind_Devices(const char *light_id)
  * Buscar dispositivo por eqid
  * ---------------------------------------------------------
  */
-stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid)
+stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type)
 {
+    
+    char tmpeqid[18] = {0};
+    if(type) sprintf(tmpeqid, "%02X:%02X:%02X:%02X:%02X:%02X",
+                                                         eqid[0],
+                                                         eqid[1],
+                                                         eqid[2],
+                                                         eqid[3],
+                                                         eqid[4],
+                                                         eqid[5],
+                                                         eqid[6]);
+     
     if (eqid == NULL)
         return NULL;
 
@@ -80,7 +91,13 @@ stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid)
         /*
          * Comparamos eqid
          */
-        if (strcmp(T_devices[i].eqid, eqid) == 0)
+        // Si el type de eqid es binario
+        if(type)
+        {
+          if (strcmp(T_devices[i].eqid, tmpeqid) == 0)
+            return &T_devices[i];   
+        }
+        else if (strcmp(T_devices[i].eqid, eqid) == 0)
             return &T_devices[i];
     }
 

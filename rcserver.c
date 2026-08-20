@@ -288,12 +288,44 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             TxHubStatus.len = sizeof(TxHubStatus);
             TxHubStatus.Cmd = Rxbuffer[3] | RC_CMD_SERVERSIDE;
             TxHubStatus.Seq = p_stRxHubStatus->Seq;
-            TxHubStatus.SStatus = _CheckHubId(p_stRxHubStatus->HubID, sizeof(p_stRxHubStatus->HubID));
             
 #ifdef _OPT_FIRMWARE_UPDATE_ENABLE
             TxHubStatus.SStatus |= SSTATUS_STS_FWUPDATE_ENABLE;
 #endif            
             
+            // Busca el dispositivo en la lista de dispositivos activos:
+            stDb_T_devices *pdev_eqid =
+            _Stfind_Devices_ByEqid(p_stRxHubStatus->HubID, 1);
+
+            // Si el dispositivo fue encontrado:
+            if (pdev_eqid)
+            {
+                TxHubStatus.SStatus = SS_STS_ONLINE;
+            }
+            else 
+            {
+#ifdef _DEBUG_RCSERVER
+                printf("[_ProcRx] ERROR Dispositivo NO encontrado [HubID %02X%02X%02X%02X%02X%02X]\n", 
+                                                                                                        p_stRxHubStatus->HubID[0],
+                                                                                                        p_stRxHubStatus->HubID[1],
+                                                                                                        p_stRxHubStatus->HubID[2],
+                                                                                                        p_stRxHubStatus->HubID[3],
+                                                                                                        p_stRxHubStatus->HubID[4],
+                                                                                                        p_stRxHubStatus->HubID[5]);                                                                           
+#endif
+                _log("[_ProcRx] ERROR-> Dispositivo NO encontrado [HubID %02X%02X%02X%02X%02X%02X]\n", 
+                                                                                                        p_stRxHubStatus->HubID[0],
+                                                                                                        p_stRxHubStatus->HubID[1],
+                                                                                                        p_stRxHubStatus->HubID[2],
+                                                                                                        p_stRxHubStatus->HubID[3],
+                                                                                                        p_stRxHubStatus->HubID[4],
+                                                                                                        p_stRxHubStatus->HubID[5]);
+                TxHubStatus.SStatus = SS_STS_ERR_NO_ALTA;
+            }
+
+            
+
+
             TxHubStatus.SRequest = 0;
             
             // ******* tomar desde base de datos *****
@@ -302,6 +334,7 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             
             TxHubStatus.DevAttached = 1;
             
+
             // Agrega la versión actual del binario para actualizar
             if(_GetNetHubFileInfo())
             {

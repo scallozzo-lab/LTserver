@@ -69,7 +69,8 @@ int _dbcheck_devices(stDb_T_devices_info *info);
 
 stDb_T_devices *_Stfind_Devices(const char *light_id);
 
-stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid);
+//stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid);
+stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type);
 
 stDb_T_devices *_Stfind_Devices_ByZone(int zone_id);
 
