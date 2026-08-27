@@ -280,6 +280,18 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             printf("p_stRxHubStatus->HubErrsts %02X\n", p_stRxHubStatus->HubErrsts);
             printf("p_stRxHubStatus->HubEvent %02X\n", p_stRxHubStatus->HubEvent);    
             printf("p_stRxHubStatus->TimeRunning (%d)Seg\n", p_stRxHubStatus->TimeRunning);
+            
+            printf("p_stRxHubStatus->latitude_e7 (%d)\n", p_stRxHubStatus->latitude_e7);
+            printf("p_stRxHubStatus->longitude_e7 (%d)\n", p_stRxHubStatus->longitude_e7);
+            printf("p_stRxHubStatus->rtc %02d/%02d/%04d %02d:%02d:%02d\n",
+                                                                          p_stRxHubStatus->rtc.day,
+                                                                          p_stRxHubStatus->rtc.month,
+                                                                          p_stRxHubStatus->rtc.year,
+                                                                          p_stRxHubStatus->rtc.hour,
+                                                                          p_stRxHubStatus->rtc.min,
+                                                                          p_stRxHubStatus->rtc.sec);
+                                                                          
+                                                                          
             printf("p_stRxHubStatus->FwVersion %04X\n", p_stRxHubStatus->FwVersion);
             printf("p_stRxHubStatus->Crc %04X\n", p_stRxHubStatus->Crc);
 #endif            

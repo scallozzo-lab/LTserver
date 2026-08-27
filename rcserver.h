@@ -204,6 +204,27 @@ typedef struct __attribute__((packed))
 }stBTxVFile;
 
 //------------------------------------------------- LT -----------------------------------------------------------
+typedef struct {
+    uint8_t sec;    // 0-59
+    uint8_t min;    // 0-59
+    uint8_t hour;   // 0-23
+    uint8_t day;    // 1-31
+    uint8_t month;  // 1-12
+    uint16_t year;  // ej: 2026
+} rtc_soft_t;
+
+typedef enum
+{
+    RTC_WEEKDAY_SUNDAY = 0,
+    RTC_WEEKDAY_MONDAY,
+    RTC_WEEKDAY_TUESDAY,
+    RTC_WEEKDAY_WEDNESDAY,
+    RTC_WEEKDAY_THURSDAY,
+    RTC_WEEKDAY_FRIDAY,
+    RTC_WEEKDAY_SATURDAY
+} rtc_weekday_t;
+
+
 // Estructuras para hub-status
 typedef struct __attribute__((packed))
 {
@@ -216,9 +237,16 @@ typedef struct __attribute__((packed))
     uint8_t HubErrsts;
     uint8_t HubEvent;   // <> 0 = Event
     uint32_t TimeRunning;
+
+    int32_t latitude_e7;
+    int32_t longitude_e7;
+    rtc_soft_t rtc;
+
     uint16_t FwVersion;
     uint16_t Crc;
 }stRxLTHubStatus;
+
+
 
 // Estructura de respuesta para HubStatus (podría devolver configuración?)
 typedef struct __attribute__((packed))
@@ -233,8 +261,12 @@ typedef struct __attribute__((packed))
     uint8_t DevAttached;
     uint8_t DevDisabled;
     uint8_t DevbitList[13];
-    uint8_t HubVer[3];      // Versión actual de NetHub (para actualizar)
-    uint8_t LTVer[3];       // Versión actual de LTX (para actualizar)
+    uint8_t HubVer[3];                   // Versión actual de NetHub (para actualizar)
+    uint8_t LTVer[3];                   // Versión actual de LTX (para actualizar)
+
+    uint8_t TxConfig;                   // Tiempo expresado en segundos para la transmisión de hubstatus
+    rtc_soft_t rtc;                     // RTC propuesto
+    
     uint16_t Crc;
 }stTxLTHubStatus;
 
