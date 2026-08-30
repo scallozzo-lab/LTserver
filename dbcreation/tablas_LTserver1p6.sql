@@ -3,8 +3,9 @@
 -- PostgreSQL Script
 
 -- VERSION 1.6 ->
---  - Agregada tabla de dispositivos  
-
+--  - Agregada tabla de dispositivos
+--  - Agregado de devtype (int2) a devstate
+      
 -- VERSION 1.5 ->
 --  - Se agrega tabla district 
 --  - Se modifica tabla zone, se agregan los campos (center_lat, center_lng, default_zoom y created_at) y se referencia a district
@@ -167,11 +168,12 @@ CREATE TABLE devices (
         -- ID de la unidad central repetidora
 
     date_time timestamptz NOT NULL DEFAULT now(),
-
+    
     devtype int2 NOT NULL,
-        -- 0-63   : Luminaria
-        -- 64-127 : SIT
-        -- 128-255: Sistema de infracciones
+    -- 0-63   : Luminaria
+    -- 64-127 : Monumento
+    -- 128-191: SIT (Sistema Inteligente de Transito)
+    -- 192-255: MIT (Monitoreo Inteligente de Transito)
 
     serial_number varchar(32) NOT NULL,
 
@@ -230,6 +232,8 @@ CREATE TABLE devices (
 CREATE TABLE devstate (
     light_id        VARCHAR(50) PRIMARY KEY,
 
+    devtype         int2 NOT NULL,
+    
     zone_id         INTEGER NOT NULL,
 
     lat             DOUBLE PRECISION,
@@ -484,7 +488,7 @@ INSERT INTO devices (
     devconfig
 )
 VALUES
-('SL-001','01:02:03:04:05:06','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000001','Luminaria 001','LT-LED150','Av. San Martin','100','Av. San Martin y Calle 1','1650',-34.6037,-58.3816,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
+('SL-001','01:02:03:04:05:09','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000001','Luminaria 001','LT-LED150','Av. San Martin','100','Av. San Martin y Calle 1','1650',-34.6037,-58.3816,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-002','00:00:00:00:00:02','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000002','Luminaria 002','LT-LED150','Av. San Martin','200','Av. San Martin y Calle 2','1650',-34.6040,-58.3820,'Luminaria LED',1,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-003','00:00:00:00:00:03','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000003','Luminaria 003','LT-LED150','Av. San Martin','300','Av. San Martin y Calle 3','1650',-34.6050,-58.3830,'Luminaria LED',2,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-004','00:00:00:00:00:04','00:00:00:00:00:00','00:00:00:00:01:00',NOW(),0,'SN-000004','Luminaria 004','LT-LED150','Av. San Martin','400','Av. San Martin y Calle 4','1650',-34.6060,-58.3840,'Luminaria LED',2,'Villa Ballester',1,TRUE,FALSE,0),
@@ -505,37 +509,102 @@ VALUES
 ('SL-019','00:00:00:00:00:13','00:00:00:00:00:00','00:00:00:00:02:00',NOW(),0,'SN-000019','Luminaria 019','LT-LED150','Calle Independencia','1900','Calle Independencia y Calle 19','1650',-36.5563,-58.5664,'Luminaria LED',5,'Villa Ballester',1,TRUE,FALSE,0),
 ('SL-020','00:00:00:00:00:14','00:00:00:00:00:00','00:00:00:00:02:00',NOW(),0,'SN-000020','Luminaria 020','LT-LED150','Calle Independencia','2000','Calle Independencia y Calle 20','1650',-36.5571,-58.5670,'Luminaria LED',5,'Villa Ballester',1,TRUE,FALSE,0);
 
+INSERT INTO devices (
+    light_id,
+    eqid,
+    linkid,
+    hubid,
+    date_time,
+    devtype,
+    serial_number,
+    _name,
+    model,
+    address,
+    address_number,
+    intersection,
+    zipcode,
+    lat,
+    lng,
+    description,
+    zone_id,
+    map_loc,
+    map_pag,
+    is_enabled,
+    is_linked,
+    devconfig
+)
+VALUES
+ ('MON-001',
+ '01:02:03:04:05:06',
+ '00:00:00:00:00:00',
+ '00:00:00:00:03:00',
+ NOW(),
+ 64,
+ 'MON-000001',
+ 'Teatro del Muelle',
+ 'MON-RGB',
+ 'Av. Guillermo Rawson',
+ '60',
+ 'Teatro del Muelle',
+ '9120',
+ -42.76291,
+ -65.03558,
+ 'Teatro del Muelle',
+ 1,
+ 'Puerto Madryn',
+ 1,
+ TRUE,
+ FALSE,
+ 0);
+
+
 -- =========================================================
 -- SAMPLE DATA - DEVSTATE
 -- =========================================================
-
 INSERT INTO devstate (
-    light_id, zone_id, lat, lng, status, dimming_level,
+    light_id, devtype, zone_id, lat, lng, status, dimming_level,
     power_watts, voltage, temperature_c, burn_hours,
     last_seen, street_name, lamp_type, rated_watts
 )
 VALUES
-('SL-001',1,-34.6037,-58.3816,'on',80,120.5,220,45.2,12000,NOW(),'Main Street','LED',150),
-('SL-002',1,-34.6040,-58.3820,'off',0,0,219,39.0,9500,NOW(),'Main Street','LED',150),
-('SL-003',2,-34.6050,-58.3830,'fault',50,98.2,210,70.5,18000,NOW(),'Oak Avenue','HPS',250),
-('SL-004',2,-34.6060,-58.3840,'maintenance',20,60.0,215,55.1,14500,NOW(),'Oak Avenue','MH',400),
-('SL-005',3,-34.6070,-58.3850,'on',100,149.0,221,42.3,5000,NOW(),'Pine Street','LED',150),
-('SL-006',3,-34.6080,-58.3860,'structure',75,112.4,220,44.0,6200,NOW(),'Pine Street','LED',150),
-('SL-007',4,-34.6090,-58.3870,'fault',30,70.1,198,81.5,21000,NOW(),'Maple Road','HPS',250),
-('SL-008',4,-34.6100,-58.3880,'off',0,0,220,33.0,7600,NOW(),'Maple Road','LED',150),
-('SL-009',5,-34.6110,-58.3890,'on',65,105.0,222,47.0,8900,NOW(),'Liberty Ave','LED',150),
-('SL-010',5,-34.6120,-58.3900,'maintenance',10,30.0,214,50.0,13200,NOW(),'Liberty Ave','MH',400),
+('SL-001',0,1,-34.6037,-58.3816,'on',80,120.5,220,45.2,12000,NOW(),'Main Street','LED',150),
+('SL-002',0,1,-34.6040,-58.3820,'off',0,0,219,39.0,9500,NOW(),'Main Street','LED',150),
+('SL-003',0,2,-34.6050,-58.3830,'fault',50,98.2,210,70.5,18000,NOW(),'Oak Avenue','HPS',250),
+('SL-004',0,2,-34.6060,-58.3840,'maintenance',20,60.0,215,55.1,14500,NOW(),'Oak Avenue','MH',400),
+('SL-005',0,3,-34.6070,-58.3850,'on',100,149.0,221,42.3,5000,NOW(),'Pine Street','LED',150),
+('SL-006',0,3,-34.6080,-58.3860,'structure',75,112.4,220,44.0,6200,NOW(),'Pine Street','LED',150),
+('SL-007',0,4,-34.6090,-58.3870,'fault',30,70.1,198,81.5,21000,NOW(),'Maple Road','HPS',250),
+('SL-008',0,4,-34.6100,-58.3880,'off',0,0,220,33.0,7600,NOW(),'Maple Road','LED',150),
+('SL-009',0,5,-34.6110,-58.3890,'on',65,105.0,222,47.0,8900,NOW(),'Liberty Ave','LED',150),
+('SL-010',0,5,-34.6120,-58.3900,'maintenance',10,30.0,214,50.0,13200,NOW(),'Liberty Ave','MH',400),
 
-('SL-011',1,-36.5481,-58.5582,'on',90,135.0,221,43.1,7200,NOW(),'Calle Alvear','LED',150),
-('SL-012',1,-36.5490,-58.5590,'off',0,0,220,35.5,9800,NOW(),'Calle Alvear','LED',150),
-('SL-013',2,-36.5502,-58.5601,'fault',40,82.5,205,76.8,19500,NOW(),'Boulevard Ballester','HPS',250),
-('SL-014',2,-36.5510,-58.5615,'structure',15,42.0,214,58.0,16300,NOW(),'Boulevard Ballester','MH',400),
-('SL-015',3,-36.5524,-58.5620,'on',100,151.0,222,41.7,4300,NOW(),'Calle Lacroze','LED',150),
-('SL-016',3,-36.5535,-58.5633,'structure',70,108.2,220,46.2,6100,NOW(),'Calle Lacroze','LED',150),
-('SL-017',4,-36.5541,-58.5640,'fault',25,65.4,199,83.3,22800,NOW(),'Avenida Márquez','HPS',250),
-('SL-018',4,-36.5550,-58.5651,'off',0,0,221,32.1,8700,NOW(),'Avenida Márquez','LED',150),
-('SL-019',5,-36.5563,-58.5664,'on',60,97.8,223,48.6,9100,NOW(),'Calle Independencia','LED',150),
-('SL-020',5,-36.5571,-58.5670,'maintenance',20,55.0,216,53.2,14800,NOW(),'Calle Independencia','MH',400);
+('SL-011',0,1,-36.5481,-58.5582,'on',90,135.0,221,43.1,7200,NOW(),'Calle Alvear','LED',150),
+('SL-012',0,1,-36.5490,-58.5590,'off',0,0,220,35.5,9800,NOW(),'Calle Alvear','LED',150),
+('SL-013',0,2,-36.5502,-58.5601,'fault',40,82.5,205,76.8,19500,NOW(),'Boulevard Ballester','HPS',250),
+('SL-014',0,2,-36.5510,-58.5615,'structure',15,42.0,214,58.0,16300,NOW(),'Boulevard Ballester','MH',400),
+('SL-015',0,3,-36.5524,-58.5620,'on',100,151.0,222,41.7,4300,NOW(),'Calle Lacroze','LED',150),
+('SL-016',0,3,-36.5535,-58.5633,'structure',70,108.2,220,46.2,6100,NOW(),'Calle Lacroze','LED',150),
+('SL-017',0,4,-36.5541,-58.5640,'fault',25,65.4,199,83.3,22800,NOW(),'Avenida Márquez','HPS',250),
+('SL-018',0,4,-36.5550,-58.5651,'off',0,0,221,32.1,8700,NOW(),'Avenida Márquez','LED',150),
+('SL-019',0,5,-36.5563,-58.5664,'on',60,97.8,223,48.6,9100,NOW(),'Calle Independencia','LED',150),
+('SL-020',0,5,-36.5571,-58.5670,'maintenance',20,55.0,216,53.2,14800,NOW(),'Calle Independencia','MH',400),
+
+('MON-001',
+ 64,
+ 1,
+ -42.76291,
+ -65.03558,
+ 'on',
+ 100,
+ 850.0,
+ 220,
+ 42.0,
+ 0,
+ NOW(),
+ 'Av. Guillermo Rawson',
+ 'LED',
+ 1000);
+ 
 -- =========================================================
 -- SAMPLE DATA - ALARM
 -- =========================================================
@@ -618,3 +687,18 @@ VALUES
 (3, NOW() - INTERVAL '3 hours',  1455.400, 53, 90.1, 0, 420.0),
 (4, NOW() - INTERVAL '2 hours',   910.700, 33, 64.3, 4, 220.7),
 (5, NOW() - INTERVAL '1 hour',   1148.200, 41, 76.8, 2, 305.6);
+
+
+-- =========================================================
+-- PERMISSIONS
+-- =========================================================
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON ALL TABLES IN SCHEMA public
+TO scallozzo;
+
+GRANT USAGE, SELECT
+ON ALL SEQUENCES IN SCHEMA public
+TO scallozzo;
+
+
