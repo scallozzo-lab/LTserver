@@ -665,9 +665,9 @@ VALUES (
     0,
 
     -- Datos eléctricos
-    850.0,
+    320.0,
     220.0,
-    42.0,
+    NULL,
     0,
     NOW(),
 
