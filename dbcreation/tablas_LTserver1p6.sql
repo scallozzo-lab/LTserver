@@ -245,6 +245,25 @@ CREATE TABLE devstate (
                         dimming_level >= 0
                         AND dimming_level <= 100
                     ),
+    
+    -- ---------------- Solo para Edificios y Monumentos -----------------------                 
+    -- RGB actual del dispositivo
+    rgb_r           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_r BETWEEN 0 AND 255),
+    rgb_g           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_g BETWEEN 0 AND 255),
+    rgb_b           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_b BETWEEN 0 AND 255),
+
+    -- Modo actual
+    -- 0 = Apagado
+    -- 1 = Modo manual
+    -- 2 = Automático
+    -- 3 = Color fijo
+    -- 4 = Efecto Fade in
+    -- 5 = Efecto Fade out
+    -- 6 = Efecto Fade In + Fade Out
+    mode            INTEGER NOT NULL DEFAULT 0 CHECK (mode BETWEEN 0 AND 6),
+    device_date_time TIMESTAMPTZ,
+    auto_program     INTEGER NOT NULL DEFAULT 0,
+    -- --------------------------------------------------------------------------
 
     power_watts     NUMERIC(10,2),
     voltage         NUMERIC(10,2),
@@ -541,7 +560,7 @@ VALUES
  NOW(),
  64,
  'MON-000001',
- 'Teatro del Muelle',
+ 'TEATRO DEL MUELLE',
  'MON-RGB',
  'Av. Guillermo Rawson',
  '60',
@@ -556,7 +575,6 @@ VALUES
  TRUE,
  FALSE,
  0);
-
 
 -- =========================================================
 -- SAMPLE DATA - DEVSTATE
@@ -587,23 +605,77 @@ VALUES
 ('SL-017',0,4,-36.5541,-58.5640,'fault',25,65.4,199,83.3,22800,NOW(),'Avenida Márquez','HPS',250),
 ('SL-018',0,4,-36.5550,-58.5651,'off',0,0,221,32.1,8700,NOW(),'Avenida Márquez','LED',150),
 ('SL-019',0,5,-36.5563,-58.5664,'on',60,97.8,223,48.6,9100,NOW(),'Calle Independencia','LED',150),
-('SL-020',0,5,-36.5571,-58.5670,'maintenance',20,55.0,216,53.2,14800,NOW(),'Calle Independencia','MH',400),
+('SL-020',0,5,-36.5571,-58.5670,'maintenance',20,55.0,216,53.2,14800,NOW(),'Calle Independencia','MH',400);
+ 
+ 
+ -- =========================================================
+-- SAMPLE DATA - DEVSTATE - Monuments
+-- =========================================================
 
-('MON-001',
- 64,
- 1,
- -42.76291,
- -65.03558,
- 'on',
- 100,
- 850.0,
- 220,
- 42.0,
- 0,
- NOW(),
- 'Av. Guillermo Rawson',
- 'LED',
- 1000);
+INSERT INTO devstate (
+    light_id,
+    devtype,
+    zone_id,
+    lat,
+    lng,
+    status,
+    dimming_level,
+
+    -- RGB / Monumentos
+    rgb_r,
+    rgb_g,
+    rgb_b,
+    mode,
+    device_date_time,
+    auto_program,
+
+    -- Datos eléctricos
+    power_watts,
+    voltage,
+    temperature_c,
+    burn_hours,
+    last_seen,
+
+    street_name,
+    lamp_type,
+    rated_watts
+)
+VALUES (
+    'MON-001',
+    64,
+    2,
+    -42.76291,
+    -65.03558,
+
+    'on',
+    100,
+
+    -- RGB actual: blanco
+    100,
+    255,
+    120,
+
+    -- Modo actual: Color fijo
+    3,
+
+    -- Todavía no tenemos la fecha/hora interna
+    NULL,
+
+    -- Programa automático actual
+    0,
+
+    -- Datos eléctricos
+    850.0,
+    220.0,
+    42.0,
+    0,
+    NOW(),
+
+    'Av. Guillermo Rawson',
+    'LED',
+    1000
+);
+
  
 -- =========================================================
 -- SAMPLE DATA - ALARM
