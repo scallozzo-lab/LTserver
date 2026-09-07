@@ -6,6 +6,7 @@
 //#define _TESTLOOP
 
 /*---------------------------Opciones de Compilación -----------------------------------------------------------*/
+#define _MAXCALENDARLST 5
 //#define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
 //#define _TEST_DB
 
@@ -15,7 +16,6 @@
 //#define _TEST_DB_ALARM
 //#define _TEST_DB_ALARM_INSERT
 //#define _TEST_DB_DEVICES
-
 /*--------------------------------------------------------------------------------------------------------------*/
 
 #define _VERSION            "0.3"
@@ -86,6 +86,7 @@ typedef enum
     LT_CMD_HUB_STATUS   = 0x20,
     LT_CMD_STATUS       = 0x21,
     LT_CMD_FW_FRAME     = 0x22,
+    LT_CMD_MDX_CFG      = 0x23,         // Llega como respuesta de hubstatus cuando hay nueva configuración
     //----------LT Server side Cmds------------//
     LT_CMD_SERVERSIDE   = 0x40,  
     //----------RC Server side-----------------//
@@ -100,7 +101,7 @@ typedef enum
     SSTATUS_STS_res3            = BIT3,
     SSTATUS_STS_res4            = BIT4,
     SSTATUS_STS_res5            = BIT5,
-    SSTATUS_STS_res6            = BIT6,
+    SSTATUS_STS_DMX_ENABLE      = BIT6,
     SSTATUS_STS_FWUPDATE_ENABLE = BIT7    
 }sstatus;
 
@@ -241,6 +242,8 @@ typedef struct __attribute__((packed))
     int32_t latitude_e7;
     int32_t longitude_e7;
     rtc_soft_t rtc;
+  
+    uint8_t dmxseq;
 
     uint16_t FwVersion;
     uint16_t Crc;
@@ -269,6 +272,48 @@ typedef struct __attribute__((packed))
     
     uint16_t Crc;
 }stTxLTHubStatus;
+
+
+typedef struct
+{
+    uint8_t  enabled;
+
+    uint8_t  start_hour;
+    uint8_t  start_minute;
+    uint8_t  end_hour;
+    uint8_t  end_minute;
+
+    uint8_t  days_mask;
+
+    uint8_t action;
+
+    uint8_t  r_g1;
+    uint8_t  g_g1;
+    uint8_t  b_g1;
+    uint8_t  r_g2;
+    uint8_t  g_g2;
+    uint8_t  b_g2;
+    uint8_t  r_g3;
+    uint8_t  g_g3;
+    uint8_t  b_g3;
+
+    uint8_t  dimming;
+
+} stCalendarEvent;
+
+
+// Estructura de respuesta para LT_CMD_MDX_CFG
+typedef struct __attribute__((packed))
+{
+    uint8_t flag;
+    uint16_t len;
+    uint8_t Cmd;
+    uint32_t Seq;
+    uint8_t MdxSeq;
+    stCalendarEvent CalendarList[_MAXCALENDARLST];
+    uint16_t Crc;
+}stTxLTMdxCfg;
+
 
 typedef struct __attribute__((packed))
 {
@@ -350,6 +395,18 @@ typedef struct __attribute__((packed))
     uint8_t buffer[_MAXFRAMEFWUPDATE];
     uint16_t Crc;    
 }stTxLTFwFrame;
+
+typedef enum
+{
+    HUB_STS_GNSS_RDY            = BIT0,
+    HUB_STS_DTIME_SYNCRO_OK     = BIT1,
+    HUB_STS_res2                = BIT2,
+    HUB_STS_res3                = BIT3,
+    HUB_STS_res4                = BIT4,
+    HUB_STS_res5                = BIT5,
+    HUB_STS_COM_SYNCHRONIZED    = BIT6,
+    HUB_STS_DMX_ENABLED         = BIT7
+}ehubstatus_t;
 
 
 unsigned short CalcCrc16(unsigned char *pdata, unsigned short lg, unsigned short seed);

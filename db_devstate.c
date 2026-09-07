@@ -8,6 +8,7 @@
 
 stDb_T_devstate T_devstate[_CANT_MAX_EQ];
 stDb_T_devstate_info devstate_info;
+//uint8_t _DmxSeq[_CANT_MAX_EQ] = {0xff};
 
 
 int _dbread_devstate_size(void)

@@ -8,6 +8,7 @@
 
 
 stDb_T_devices T_devices[_CANT_MAX_EQ];
+stSessionData_T_dev SessionData_T_dev[_CANT_MAX_EQ];
 stDb_T_devices_info devices_info;
 
 
@@ -58,13 +59,12 @@ stDb_T_devices *_Stfind_Devices(const char *light_id)
     return NULL;
 }
 
-
 /*
  * ---------------------------------------------------------
  * Buscar dispositivo por eqid
  * ---------------------------------------------------------
  */
-stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type)
+stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type, int *idx)
 {
     
     char tmpeqid[18] = {0};
@@ -94,13 +94,18 @@ stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type)
         // Si el type de eqid es binario
         if(type)
         {
-          if (strcmp(T_devices[i].eqid, tmpeqid) == 0)
-            return &T_devices[i];   
+            if (strcmp(T_devices[i].eqid, tmpeqid) == 0)
+            {
+                if(idx) *idx = i;
+                return &T_devices[i];
+            }   
         }
         else if (strcmp(T_devices[i].eqid, eqid) == 0)
+        {    
+            if(idx) *idx = i;
             return &T_devices[i];
+        }
     }
-
     return NULL;
 }
 
@@ -873,8 +878,8 @@ int _dbcheck_devices(stDb_T_devices_info *info)
 void _InitDb_devices(void)
 {
     memset(T_devices, 0, sizeof(T_devices));
-
     memset(&devices_info, 0, sizeof(devices_info));
+    memset(&SessionData_T_dev, 0, sizeof(SessionData_T_dev));
 
     _dbread_table_devices();
 

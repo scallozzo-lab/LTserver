@@ -43,8 +43,6 @@ int _Init_dbread(void)
     ret = _dbread_bulk();
 }
 
-
-
 int _dbread_bulk(void)
 {
     int ret = 0;

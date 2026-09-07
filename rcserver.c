@@ -278,14 +278,16 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                                                                         p_stRxHubStatus->HubID[4],
                                                                         p_stRxHubStatus->HubID[5]);
             
-            printf("p_stRxHubStatus->HubStatus %02X\n", p_stRxHubStatus->HubStatus);
+            printf("p_stRxHubStatus->HubStatus %02X ", p_stRxHubStatus->HubStatus);
+            if(p_stRxHubStatus->HubStatus & HUB_STS_DMX_ENABLED) printf("[MDX Mode ENABLED]\n");
+            else printf("\n");
             printf("p_stRxHubStatus->HubErrsts %02X\n", p_stRxHubStatus->HubErrsts);
             printf("p_stRxHubStatus->HubEvent %02X\n", p_stRxHubStatus->HubEvent);    
             printf("p_stRxHubStatus->TimeRunning (%d)Seg\n", p_stRxHubStatus->TimeRunning);
             
             printf("p_stRxHubStatus->latitude_e7 (%d)\n", p_stRxHubStatus->latitude_e7);
             printf("p_stRxHubStatus->longitude_e7 (%d)\n", p_stRxHubStatus->longitude_e7);
-            printf("p_stRxHubStatus->rtc %02d/%02d/%04d %02d:%02d:%02d\n",
+            printf("p_stRxHubStatus->crtc %02d/%02d/%04d %02d:%02d:%02d\n",
                                                                           p_stRxHubStatus->rtc.day,
                                                                           p_stRxHubStatus->rtc.month,
                                                                           p_stRxHubStatus->rtc.year,
@@ -293,7 +295,8 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                                                                           p_stRxHubStatus->rtc.min,
                                                                           p_stRxHubStatus->rtc.sec);
                                                                           
-                                                                          
+            printf("p_stRxHubStatus->dmxseq %02d\n", p_stRxHubStatus->dmxseq);
+ 
             printf("p_stRxHubStatus->FwVersion %04X\n", p_stRxHubStatus->FwVersion);
             printf("p_stRxHubStatus->Crc %04X\n", p_stRxHubStatus->Crc);
 #endif            
@@ -307,14 +310,35 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             TxHubStatus.SStatus |= SSTATUS_STS_FWUPDATE_ENABLE;
 #endif            
             
+            int devidx = 0;
             // Busca el dispositivo en la lista de dispositivos activos:
             stDb_T_devices *pdev_eqid =
-            _Stfind_Devices_ByEqid(p_stRxHubStatus->HubID, 1);
+            _Stfind_Devices_ByEqid(p_stRxHubStatus->HubID, 1, &devidx);
 
             // Si el dispositivo fue encontrado:
             if (pdev_eqid)
             {
                 TxHubStatus.SStatus = SS_STS_ONLINE;
+                printf("devtype %02X\n ", pdev_eqid->devtype);
+                if(pdev_eqid->devtype == 0x40) 
+                {
+                    TxHubStatus.SStatus |= SSTATUS_STS_DMX_ENABLE;
+                
+                    // Si la secuencia es diferente, el NETHub necesita refrescar su lista
+                    if(p_stRxHubStatus->dmxseq != SessionData_T_dev[devidx]._DmxSeq)
+                    {
+                        stTxLTMdxCfg TxLTMdxCfg = {0};
+                        
+                        TxLTMdxCfg.flag = 0xA5;
+                        TxLTMdxCfg.len = sizeof(TxHubStatus);
+                        TxLTMdxCfg.Cmd = LT_CMD_MDX_CFG | RC_CMD_SERVERSIDE;
+                        TxLTMdxCfg.Seq = p_stRxHubStatus->Seq;
+                        TxLTMdxCfg.MdxSeq = SessionData_T_dev[devidx]._DmxSeq;
+                        
+
+
+                    }
+                }
             }
             else 
             {

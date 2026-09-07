@@ -59,10 +59,16 @@ typedef struct
 
 } stDb_T_devices_info;
 
+typedef struct
+{
+    char eqid[18];
+    uint8_t _DmxSeq;;
+} stSessionData_T_dev;
+
 
 extern stDb_T_devices T_devices[];
 extern stDb_T_devices_info devices_info;
-
+extern stSessionData_T_dev SessionData_T_dev[];
 
 int _dbread_devices_size(void);
 int _dbcheck_devices(stDb_T_devices_info *info);
@@ -70,8 +76,8 @@ int _dbcheck_devices(stDb_T_devices_info *info);
 stDb_T_devices *_Stfind_Devices(const char *light_id);
 
 //stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid);
-stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type);
-
+//stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type);
+stDb_T_devices *_Stfind_Devices_ByEqid(const char *eqid, uint8_t type, int *idx);
 stDb_T_devices *_Stfind_Devices_ByZone(int zone_id);
 
 int _dbread_table_devices(void);
