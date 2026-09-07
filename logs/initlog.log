@@ -1,9 +1,9 @@
-[2026-09-07 16:44:29] RCServer Version 0.3
-[2026-09-07 16:44:29] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
-[2026-09-07 16:44:29] [_LoadNetHubBin] Tamaño: 25108 bytes
-[2026-09-07 16:44:29] [_LoadNetHubBin] FW.Header->
-[2026-09-07 16:44:29] len 00006214
-[2026-09-07 16:44:29] signature D643F812
-[2026-09-07 16:44:29] FW.Header crc calc D643F812
-[2026-09-07 16:44:29] [_LoadNetHubBin] Firmware NetHUB V1.6 (FWH) OK
-[2026-09-07 16:44:30] RCServer activo puerto: 5000...
+[2026-09-07 16:58:57] RCServer Version 0.3
+[2026-09-07 16:58:57] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
+[2026-09-07 16:58:57] [_LoadNetHubBin] Tamaño: 25108 bytes
+[2026-09-07 16:58:57] [_LoadNetHubBin] FW.Header->
+[2026-09-07 16:58:57] len 00006214
+[2026-09-07 16:58:57] signature D643F812
+[2026-09-07 16:58:57] FW.Header crc calc D643F812
+[2026-09-07 16:58:57] [_LoadNetHubBin] Firmware NetHUB V1.6 (FWH) OK
+[2026-09-07 16:58:57] RCServer activo puerto: 5000...

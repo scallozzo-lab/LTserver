@@ -9,6 +9,16 @@
 
 typedef struct
 {
+    bool     enable;
+
+    uint8_t  r;
+    uint8_t  g;
+    uint8_t  b;
+
+} stRgbGroup;
+
+typedef struct
+{
     char     light_id[51];
 
     int32_t  zone_id;
@@ -19,6 +29,11 @@ typedef struct
     char     status[16];
 
     int32_t  dimming_level;
+
+    /*
+     * RGB Groups
+     */
+    stRgbGroup rgb[3];
 
     double   power_watts;
     double   voltage;
