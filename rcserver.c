@@ -28,8 +28,10 @@
 #include "rcserver.h"
 #include "storefiles.h"
 #include "db.h"
+#include "db_devstate.h"
 #include "loop2app.h"
 #include "nethubbin.h"
+
 
 int sockfd = 0;
 stRCServer RCServer;
@@ -745,7 +747,11 @@ void _Proc10msFuncs(void)
         else
         {
             // Sino sin error de lectura...
-
+            rcheck = _dbcheck_devstate(&devstate_info);
+            if(rcheck == _DB_DEVICES_CHANGED)
+            {
+                _dbread_table_devstate();
+            }
         }
         RCServer.dbreadtim = _TMAXDBREAD;
     }

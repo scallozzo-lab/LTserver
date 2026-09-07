@@ -5,7 +5,8 @@
 -- VERSION 1.6 ->
 --  - Agregada tabla de dispositivos
 --  - Agregado de devtype (int2) a devstate
-      
+--  - Agregado de rgbg2 y rgbg3
+
 -- VERSION 1.5 ->
 --  - Se agrega tabla district 
 --  - Se modifica tabla zone, se agregan los campos (center_lat, center_lng, default_zoom y created_at) y se referencia a district
@@ -248,9 +249,23 @@ CREATE TABLE devstate (
     
     -- ---------------- Solo para Edificios y Monumentos -----------------------                 
     -- RGB actual del dispositivo
-    rgb_r           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_r BETWEEN 0 AND 255),
-    rgb_g           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_g BETWEEN 0 AND 255),
-    rgb_b           INTEGER NOT NULL DEFAULT 0 CHECK (rgb_b BETWEEN 0 AND 255),
+    -- Grupo RGB 1
+    rgbg1_enable    BOOLEAN NOT NULL DEFAULT TRUE,
+    rgbg1_r           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_r BETWEEN 0 AND 255),
+    rgbg1_g           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_g BETWEEN 0 AND 255),
+    rgbg1_b           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_b BETWEEN 0 AND 255),
+
+    -- Grupo RGB 2
+    rgbg2_enable    BOOLEAN NOT NULL DEFAULT FALSE,
+    rgbg2_r         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_r BETWEEN 0 AND 255),
+    rgbg2_g         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_g BETWEEN 0 AND 255),
+    rgbg2_b         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_b BETWEEN 0 AND 255),
+
+    -- Grupo RGB 3
+    rgbg3_enable    BOOLEAN NOT NULL DEFAULT FALSE,
+    rgbg3_r         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_r BETWEEN 0 AND 255),
+    rgbg3_g         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_g BETWEEN 0 AND 255),
+    rgbg3_b         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_b BETWEEN 0 AND 255),
 
     -- Modo actual
     -- 0 = Apagado
@@ -622,9 +637,21 @@ INSERT INTO devstate (
     dimming_level,
 
     -- RGB / Monumentos
-    rgb_r,
-    rgb_g,
-    rgb_b,
+    rgbg1_enable,
+    rgbg1_r,
+    rgbg1_g,
+    rgbg1_b,
+
+    rgbg2_enable,
+    rgbg2_r,
+    rgbg2_g,
+    rgbg2_b,
+    
+    rgbg3_enable,
+    rgbg3_r,
+    rgbg3_g,
+    rgbg3_b,
+    
     mode,
     device_date_time,
     auto_program,
@@ -651,10 +678,20 @@ VALUES (
     100,
 
     -- RGB actual: blanco
+    true,
     100,
     255,
     120,
 
+    true,
+    100,
+    100,
+    100,
+
+    false,
+    0,
+    0,
+    0,
     -- Modo actual: Color fijo
     3,
 

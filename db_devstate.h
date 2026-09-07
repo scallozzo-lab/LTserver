@@ -56,6 +56,8 @@ int _dbcheck_devstate(stDb_T_devstate_info *info);
 
 
 extern stDb_T_devstate T_devstate[_CANT_MAX_EQ];
+extern stDb_T_devstate_info devstate_info;
+
 
 int _dbread_devstate_size(void);
 int _dbread_table_devstate(void);
