@@ -301,6 +301,16 @@ typedef struct
 
 } stCalendarEvent;
 
+typedef enum
+{
+    RGB_MODE_OFF = 0,
+    RGB_MODE_MANUAL,
+    RGB_MODE_AUTO,
+    RGB_MODE_FIXED,
+    RGB_MODE_FADE_IN,
+    RGB_MODE_FADE_OUT,
+    RGB_MODE_FADEIN_FADEOUT,
+}ergbmode;  
 
 // Estructura de respuesta para LT_CMD_MDX_CFG
 typedef struct __attribute__((packed))

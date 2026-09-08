@@ -396,7 +396,6 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 stDb_T_devstate *p_devstate = _Stfind_Devstate(pdev_eqid->light_id);
                 if(p_devstate)
                 {
-                    
                     printf("RGB0 = %d %u %u %u\n",
                         p_devstate->rgb[0].enable,
                         p_devstate->rgb[0].r,
@@ -416,8 +415,9 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                         p_devstate->rgb[2].b);
 
                     memcpy(&TxHubStatus.DevbitList[1], (uint8_t*)p_devstate->rgb, sizeof(TxHubStatus.DevbitList) - 1);
-                    if(p_devstate->mode != 2)
+                    if(p_devstate->mode != RGB_MODE_AUTO)
                     {
+                        // Modo manual
                         TxHubStatus.SRequest = 1;
                         TxHubStatus.DevbitList[0] = (uint8_t)p_devstate->mode;
                     }
