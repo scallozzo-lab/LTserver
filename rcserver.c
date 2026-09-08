@@ -326,16 +326,43 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 {
                     TxHubStatus.SStatus |= SSTATUS_STS_DMX_ENABLE;
                 
-                    // Si la secuencia es diferente, el NETHub necesita refrescar su lista
-                    if(p_stRxHubStatus->dmxseq != SessionData_T_dev[devidx]._DmxSeq)
+                    stDb_T_devcalendar *p_devcalendar = _Stfind_Devcalendar(pdev_eqid->light_id);
+
+                    if(p_devcalendar)
+                    {    
+                        // Si la secuencia es diferente, el NETHub necesita refrescar su lista
+                        if(p_stRxHubStatus->dmxseq != SessionData_T_dev[devidx]._DmxSeq)
+                        {
+                            stTxLTMdxCfg TxLTMdxCfg = {0};
+                            
+                            TxLTMdxCfg.flag = 0xA5;
+                            TxLTMdxCfg.len = sizeof(TxLTMdxCfg);
+                            TxLTMdxCfg.Cmd = LT_CMD_MDX_CFG | RC_CMD_SERVERSIDE;
+                            TxLTMdxCfg.Seq = p_stRxHubStatus->Seq;
+                            TxLTMdxCfg.MdxSeq = SessionData_T_dev[devidx]._DmxSeq;
+                            memcpy(TxLTMdxCfg.CalendarList, p_devcalendar->CalendarList, sizeof(p_devcalendar->CalendarList));
+                            
+                            TxLTMdxCfg.Crc = crc_ccitt((uint8_t*)&TxLTMdxCfg, sizeof(TxLTMdxCfg) - sizeof(TxLTMdxCfg.Crc));
+                            
+                            if(_Send2EQ(rxaddr, (uint8_t*)&TxLTMdxCfg, sizeof(TxLTMdxCfg)))
+                            {
+                                _log("[_ProcRx] ERROR-> Tx LT_CMD_MDX_CFG a LT IP:%s\n\r", ip_address);
+                            }
+                #ifdef _DEBUG_RCSERVER            
+                            else
+                            {
+                                printf("[_ProcRx] - Tx-> LT_CMD_MDX_CFG\n");
+                            }
+                #endif
+                            break;
+                        }
+                        else 
+                            printf("misma secuencia\n");
+                    }
+                    else
                     {
-                        stTxLTMdxCfg TxLTMdxCfg = {0};
-                        
-                        TxLTMdxCfg.flag = 0xA5;
-                        TxLTMdxCfg.len = sizeof(TxHubStatus);
-                        TxLTMdxCfg.Cmd = LT_CMD_MDX_CFG | RC_CMD_SERVERSIDE;
-                        TxLTMdxCfg.Seq = p_stRxHubStatus->Seq;
-                        TxLTMdxCfg.MdxSeq = SessionData_T_dev[devidx]._DmxSeq;
+                        printf("Error DISPOSITIVO NO ENCONTRADO \n");
+                        break;
                     }
                 }
             }
@@ -380,7 +407,6 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 TxHubStatus.HubVer[2] = _GetNetHubFileInfo()->ver[2];
             }
 
-            //TxHubStatus.Crc = CalcCrc16((uint8_t*)&TxHubStatus, sizeof(TxHubStatus) - sizeof(TxHubStatus.Crc), 0);
             TxHubStatus.Crc = crc_ccitt((uint8_t*)&TxHubStatus, sizeof(TxHubStatus) - sizeof(TxHubStatus.Crc));
             
             if(_Send2EQ(rxaddr, (uint8_t*)&TxHubStatus, sizeof(TxHubStatus)))
@@ -774,6 +800,12 @@ void _Proc10msFuncs(void)
             if(rcheck == _DB_DEVICES_CHANGED)
             {
                 _dbread_table_devstate();
+                _dbread_table_devcalendar();
+
+                // trucho, esta a lo salvaje, debe actualizar solo lo que cambie, no todo
+                for(int x=0;x<_CANT_MAX_EQ;x++)
+                    SessionData_T_dev[x]._DmxSeq++;
+
             }
         }
         RCServer.dbreadtim = _TMAXDBREAD;

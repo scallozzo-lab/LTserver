@@ -879,7 +879,7 @@ void _InitDb_devices(void)
 {
     memset(T_devices, 0, sizeof(T_devices));
     memset(&devices_info, 0, sizeof(devices_info));
-    memset(&SessionData_T_dev, 0, sizeof(SessionData_T_dev));
+    memset(&SessionData_T_dev, 0xf1, sizeof(SessionData_T_dev));
 
     _dbread_table_devices();
 
