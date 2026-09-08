@@ -34,6 +34,10 @@ typedef struct
      * RGB Groups
      */
     stRgbGroup rgb[3];
+    int32_t devtype;
+    int32_t mode;
+    char    device_date_time[32];
+    int32_t auto_program;
 
     double   power_watts;
     double   voltage;
@@ -79,5 +83,6 @@ int _dbread_table_devstate(void);
 int _dbwrite_devstate(stDb_T_devstate *pdev);
 int _dbcheck_devstate(stDb_T_devstate_info *info);
 void _InitDb_devstate(void);
+stDb_T_devstate *_Stfind_Devstate(const char *light_id);
 
 #endif

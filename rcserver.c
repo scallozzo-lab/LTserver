@@ -357,7 +357,10 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                             break;
                         }
                         else 
+                        {    
                             printf("misma secuencia\n");
+                            
+                        }
                     }
                     else
                     {
@@ -387,17 +390,51 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 TxHubStatus.SStatus = SS_STS_ERR_NO_ALTA;
             }
 
-            
+            // Si está en modo dmx carga la estructura de rgb manual
+            if(TxHubStatus.SStatus & SSTATUS_STS_DMX_ENABLE)
+            {
+                stDb_T_devstate *p_devstate = _Stfind_Devstate(pdev_eqid->light_id);
+                if(p_devstate)
+                {
+                    
+                    printf("RGB0 = %d %u %u %u\n",
+                        p_devstate->rgb[0].enable,
+                        p_devstate->rgb[0].r,
+                        p_devstate->rgb[0].g,
+                        p_devstate->rgb[0].b);
 
+                    printf("RGB1 = %d %u %u %u\n",
+                        p_devstate->rgb[1].enable,
+                        p_devstate->rgb[1].r,
+                        p_devstate->rgb[1].g,
+                        p_devstate->rgb[1].b);
 
-            TxHubStatus.SRequest = 0;
+                    printf("RGB2 = %d %u %u %u\n",
+                        p_devstate->rgb[2].enable,
+                        p_devstate->rgb[2].r,
+                        p_devstate->rgb[2].g,
+                        p_devstate->rgb[2].b);
+
+                    memcpy(&TxHubStatus.DevbitList[1], (uint8_t*)p_devstate->rgb, sizeof(TxHubStatus.DevbitList) - 1);
+                    if(p_devstate->mode != 2)
+                    {
+                        TxHubStatus.SRequest = 1;
+                        TxHubStatus.DevbitList[0] = (uint8_t)p_devstate->mode;
+                    }
+                    else
+                        printf("Error devstate no encontrado\n");
+                }
+            }
+            else
+            {
+                
+                TxHubStatus.SRequest = 0;
+                // ******* tomar desde base de datos *****
+                TxHubStatus.DevbitList[0] = 0xff;
+                TxHubStatus.DevbitList[0] = 0x1;
             
-            // ******* tomar desde base de datos *****
-            TxHubStatus.DevbitList[0] = 0xff;
-            TxHubStatus.DevbitList[0] = 0x1;
-            
-            TxHubStatus.DevAttached = 1;
-            
+                TxHubStatus.DevAttached = 1;            
+            }
 
             // Agrega la versión actual del binario para actualizar
             if(_GetNetHubFileInfo())

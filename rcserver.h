@@ -24,7 +24,7 @@
 #define _LENFILENAME        (23 + 1) 
 #define DEST_PORT           5000
 #define _RXBUFFER_SIZE      1350//1350 //(1458 es el máximo, pero hay que tener en cuenta el header the IP viene con opciones)
-#define _TMAXDBREAD         3000//1000    // base 0,01Seg
+#define _TMAXDBREAD         300//3000//1000    // base 0,01Seg
 #define _MAXVFILETIMEOUT    30        // Base 1Seg (Max 255)
 //#define _MAXFRAMEFWUPDATE  1024    
 //#define _MAXFRAMEFWUPDATE  128    

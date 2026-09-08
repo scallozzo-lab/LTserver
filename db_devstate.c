@@ -67,23 +67,7 @@ stDb_T_devstate *_Stfind_Devstate_ByZone(int zone_id)
     return NULL;
 }
 
-/*
- * Lee la tabla devstate completa
- *
- * Requiere que stDb_T_devstate tenga:
- *
- *     stRgbGroup rgb[3];
- *
- * y que stRgbGroup sea:
- *
- *     typedef struct
- *     {
- *         bool    enable;
- *         uint8_t r;
- *         uint8_t g;
- *         uint8_t b;
- *     } stRgbGroup;
- */
+
 int _dbread_table_devstate(void)
 {
     int ret = _DB_STS_OK;
@@ -100,8 +84,10 @@ int _dbread_table_devstate(void)
              PQerrorMessage(conn));
 
         PQfinish(conn);
+
         return _DB_STS_ERR_CONN;
     }
+
 
     /*
      * Consulta explícita de las columnas.
@@ -110,39 +96,45 @@ int _dbread_table_devstate(void)
     PGresult *res = PQexec(conn,
         "SELECT "
         "light_id, "          /*  0 */
-        "zone_id, "           /*  1 */
-        "lat, "               /*  2 */
-        "lng, "               /*  3 */
-        "status, "            /*  4 */
-        "dimming_level, "     /*  5 */
+        "devtype, "           /*  1 */
+        "zone_id, "           /*  2 */
+        "lat, "               /*  3 */
+        "lng, "               /*  4 */
+        "status, "            /*  5 */
+        "dimming_level, "     /*  6 */
 
-        "rgbg1_enable, "      /*  6 */
-        "rgbg1_r, "           /*  7 */
-        "rgbg1_g, "           /*  8 */
-        "rgbg1_b, "           /*  9 */
+        "rgbg1_enable, "      /*  7 */
+        "rgbg1_r, "           /*  8 */
+        "rgbg1_g, "           /*  9 */
+        "rgbg1_b, "           /* 10 */
 
-        "rgbg2_enable, "      /* 10 */
-        "rgbg2_r, "           /* 11 */
-        "rgbg2_g, "           /* 12 */
-        "rgbg2_b, "           /* 13 */
+        "rgbg2_enable, "      /* 11 */
+        "rgbg2_r, "           /* 12 */
+        "rgbg2_g, "           /* 13 */
+        "rgbg2_b, "           /* 14 */
 
-        "rgbg3_enable, "      /* 14 */
-        "rgbg3_r, "           /* 15 */
-        "rgbg3_g, "           /* 16 */
-        "rgbg3_b, "           /* 17 */
+        "rgbg3_enable, "      /* 15 */
+        "rgbg3_r, "           /* 16 */
+        "rgbg3_g, "           /* 17 */
+        "rgbg3_b, "           /* 18 */
 
-        "power_watts, "       /* 18 */
-        "voltage, "           /* 19 */
-        "temperature_c, "     /* 20 */
-        "burn_hours, "        /* 21 */
-        "last_seen, "         /* 22 */
-        "street_name, "       /* 23 */
-        "lamp_type, "         /* 24 */
-        "rated_watts, "       /* 25 */
-        "created_at, "        /* 26 */
-        "updated_at "         /* 27 */
+        "mode, "              /* 19 */
+        "device_date_time, "  /* 20 */
+        "auto_program, "      /* 21 */
+
+        "power_watts, "       /* 22 */
+        "voltage, "           /* 23 */
+        "temperature_c, "     /* 24 */
+        "burn_hours, "        /* 25 */
+        "last_seen, "         /* 26 */
+        "street_name, "       /* 27 */
+        "lamp_type, "         /* 28 */
+        "rated_watts, "       /* 29 */
+        "created_at, "        /* 30 */
+        "updated_at "         /* 31 */
         "FROM devstate"
     );
+
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
@@ -159,17 +151,22 @@ int _dbread_table_devstate(void)
         return _DB_STS_ERR_CMD;
     }
 
+
     int rows = PQntuples(res);
+
 
 #ifdef _DEBUG_DB_READ
     printf("[_dbread_table_devstate] Rows: %d\n", rows);
 #endif
 
+
     if (rows > _CANT_MAX_EQ)
     {
-        printf("[_dbread_table_devstate] Error! MAX(%d)\r\n", rows);
+        printf("[_dbread_table_devstate] Error! MAX(%d)\r\n",
+               rows);
 
-        _log("[_dbread_table_devstate] Error! MAX(%d)\r\n", rows);
+        _log("[_dbread_table_devstate] Error! MAX(%d)\r\n",
+             rows);
 
         ret = _DB_STS_ERR_STRUCT;
     }
@@ -177,15 +174,19 @@ int _dbread_table_devstate(void)
     {
         int cols = PQnfields(res);
 
+
         /*
-         * 16 columnas originales + 12 columnas RGB = 28.
+         * Total actual: 32 columnas
          */
-        if (cols != 28)
+        if (cols != 32)
         {
 #ifdef _DEBUG_DB_READ
-            printf("[_dbread_table_devstate] Error! Columns (%d)\r\n", cols);
+            printf("[_dbread_table_devstate] Error! Columns (%d)\r\n",
+                   cols);
 #endif
-            _log("[_dbread_table_devstate] Error! Columns (%d)\r\n", cols);
+
+            _log("[_dbread_table_devstate] Error! Columns (%d)\r\n",
+                 cols);
 
             ret = _DB_STS_ERR_STRUCT;
         }
@@ -193,13 +194,18 @@ int _dbread_table_devstate(void)
         {
             memset(T_devstate, 0, sizeof(T_devstate));
 
+
             for (int i = 0; i < rows; i++)
             {
+
 #ifdef _DEBUG_DB_READ
                 printf("\nrow nr:%d\n", i + 1);
 #endif
 
-                /* light_id */
+
+                /*
+                 * light_id
+                 */
                 if (!PQgetisnull(res, i, 0))
                 {
                     strncpy(T_devstate[i].light_id,
@@ -207,237 +213,404 @@ int _dbread_table_devstate(void)
                             sizeof(T_devstate[i].light_id) - 1);
                 }
 
-                /* zone_id */
+
+                /*
+                 * devtype
+                 */
                 if (!PQgetisnull(res, i, 1))
                 {
-                    T_devstate[i].zone_id =
+                    T_devstate[i].devtype =
                         atoi(PQgetvalue(res, i, 1));
                 }
 
-                /* lat */
+
+                /*
+                 * zone_id
+                 */
                 if (!PQgetisnull(res, i, 2))
                 {
-                    T_devstate[i].lat =
-                        atof(PQgetvalue(res, i, 2));
+                    T_devstate[i].zone_id =
+                        atoi(PQgetvalue(res, i, 2));
                 }
 
-                /* lng */
+
+                /*
+                 * lat
+                 */
                 if (!PQgetisnull(res, i, 3))
                 {
-                    T_devstate[i].lng =
+                    T_devstate[i].lat =
                         atof(PQgetvalue(res, i, 3));
                 }
 
-                /* status */
+
+                /*
+                 * lng
+                 */
                 if (!PQgetisnull(res, i, 4))
                 {
+                    T_devstate[i].lng =
+                        atof(PQgetvalue(res, i, 4));
+                }
+
+
+                /*
+                 * status
+                 */
+                if (!PQgetisnull(res, i, 5))
+                {
                     strncpy(T_devstate[i].status,
-                            PQgetvalue(res, i, 4),
+                            PQgetvalue(res, i, 5),
                             sizeof(T_devstate[i].status) - 1);
                 }
 
-                /* dimming_level */
-                if (!PQgetisnull(res, i, 5))
+
+                /*
+                 * dimming_level
+                 */
+                if (!PQgetisnull(res, i, 6))
                 {
                     T_devstate[i].dimming_level =
-                        atoi(PQgetvalue(res, i, 5));
+                        atoi(PQgetvalue(res, i, 6));
                 }
+
 
                 /*
                  * RGB GROUP 1
                  */
-                if (!PQgetisnull(res, i, 6))
-                {
-                    const char *v = PQgetvalue(res, i, 6);
-
-                    T_devstate[i].rgb[0].enable =
-                        (v[0] == 't' || v[0] == 'T' || v[0] == '1');
-                }
-
                 if (!PQgetisnull(res, i, 7))
                 {
-                    T_devstate[i].rgb[0].r =
-                        (uint8_t)atoi(PQgetvalue(res, i, 7));
+                    const char *v =
+                        PQgetvalue(res, i, 7);
+
+                    T_devstate[i].rgb[0].enable =
+                        (v[0] == 't' ||
+                         v[0] == 'T' ||
+                         v[0] == '1');
                 }
+
 
                 if (!PQgetisnull(res, i, 8))
                 {
-                    T_devstate[i].rgb[0].g =
-                        (uint8_t)atoi(PQgetvalue(res, i, 8));
+                    T_devstate[i].rgb[0].r =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 8));
                 }
+
 
                 if (!PQgetisnull(res, i, 9))
                 {
-                    T_devstate[i].rgb[0].b =
-                        (uint8_t)atoi(PQgetvalue(res, i, 9));
+                    T_devstate[i].rgb[0].g =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 9));
                 }
+
+
+                if (!PQgetisnull(res, i, 10))
+                {
+                    T_devstate[i].rgb[0].b =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 10));
+                }
+
 
                 /*
                  * RGB GROUP 2
                  */
-                if (!PQgetisnull(res, i, 10))
-                {
-                    const char *v = PQgetvalue(res, i, 10);
-
-                    T_devstate[i].rgb[1].enable =
-                        (v[0] == 't' || v[0] == 'T' || v[0] == '1');
-                }
-
                 if (!PQgetisnull(res, i, 11))
                 {
-                    T_devstate[i].rgb[1].r =
-                        (uint8_t)atoi(PQgetvalue(res, i, 11));
+                    const char *v =
+                        PQgetvalue(res, i, 11);
+
+                    T_devstate[i].rgb[1].enable =
+                        (v[0] == 't' ||
+                         v[0] == 'T' ||
+                         v[0] == '1');
                 }
+
 
                 if (!PQgetisnull(res, i, 12))
                 {
-                    T_devstate[i].rgb[1].g =
-                        (uint8_t)atoi(PQgetvalue(res, i, 12));
+                    T_devstate[i].rgb[1].r =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 12));
                 }
+
 
                 if (!PQgetisnull(res, i, 13))
                 {
-                    T_devstate[i].rgb[1].b =
-                        (uint8_t)atoi(PQgetvalue(res, i, 13));
+                    T_devstate[i].rgb[1].g =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 13));
                 }
+
+
+                if (!PQgetisnull(res, i, 14))
+                {
+                    T_devstate[i].rgb[1].b =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 14));
+                }
+
 
                 /*
                  * RGB GROUP 3
                  */
-                if (!PQgetisnull(res, i, 14))
-                {
-                    const char *v = PQgetvalue(res, i, 14);
-
-                    T_devstate[i].rgb[2].enable =
-                        (v[0] == 't' || v[0] == 'T' || v[0] == '1');
-                }
-
                 if (!PQgetisnull(res, i, 15))
                 {
-                    T_devstate[i].rgb[2].r =
-                        (uint8_t)atoi(PQgetvalue(res, i, 15));
+                    const char *v =
+                        PQgetvalue(res, i, 15);
+
+                    T_devstate[i].rgb[2].enable =
+                        (v[0] == 't' ||
+                         v[0] == 'T' ||
+                         v[0] == '1');
                 }
+
 
                 if (!PQgetisnull(res, i, 16))
                 {
-                    T_devstate[i].rgb[2].g =
-                        (uint8_t)atoi(PQgetvalue(res, i, 16));
+                    T_devstate[i].rgb[2].r =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 16));
                 }
+
 
                 if (!PQgetisnull(res, i, 17))
                 {
-                    T_devstate[i].rgb[2].b =
-                        (uint8_t)atoi(PQgetvalue(res, i, 17));
+                    T_devstate[i].rgb[2].g =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 17));
                 }
 
-                /* power_watts */
+
                 if (!PQgetisnull(res, i, 18))
                 {
-                    T_devstate[i].power_watts =
-                        atof(PQgetvalue(res, i, 18));
+                    T_devstate[i].rgb[2].b =
+                        (uint8_t)atoi(
+                            PQgetvalue(res, i, 18));
                 }
 
-                /* voltage */
+
+                /*
+                 * mode
+                 */
                 if (!PQgetisnull(res, i, 19))
                 {
-                    T_devstate[i].voltage =
-                        atof(PQgetvalue(res, i, 19));
+                    T_devstate[i].mode =
+                        atoi(PQgetvalue(res, i, 19));
                 }
 
-                /* temperature_c */
+
+                /*
+                 * device_date_time
+                 */
                 if (!PQgetisnull(res, i, 20))
                 {
-                    T_devstate[i].temperature_c =
-                        atof(PQgetvalue(res, i, 20));
+                    strncpy(
+                        T_devstate[i].device_date_time,
+                        PQgetvalue(res, i, 20),
+                        sizeof(
+                            T_devstate[i].device_date_time
+                        ) - 1);
                 }
 
-                /* burn_hours */
+
+                /*
+                 * auto_program
+                 */
                 if (!PQgetisnull(res, i, 21))
                 {
-                    T_devstate[i].burn_hours =
-                        atoll(PQgetvalue(res, i, 21));
+                    T_devstate[i].auto_program =
+                        atoi(PQgetvalue(res, i, 21));
                 }
 
-                /* last_seen */
+
+                /*
+                 * power_watts
+                 */
                 if (!PQgetisnull(res, i, 22))
                 {
+                    T_devstate[i].power_watts =
+                        atof(PQgetvalue(res, i, 22));
+                }
+
+
+                /*
+                 * voltage
+                 */
+                if (!PQgetisnull(res, i, 23))
+                {
+                    T_devstate[i].voltage =
+                        atof(PQgetvalue(res, i, 23));
+                }
+
+
+                /*
+                 * temperature_c
+                 */
+                if (!PQgetisnull(res, i, 24))
+                {
+                    T_devstate[i].temperature_c =
+                        atof(PQgetvalue(res, i, 24));
+                }
+
+
+                /*
+                 * burn_hours
+                 */
+                if (!PQgetisnull(res, i, 25))
+                {
+                    T_devstate[i].burn_hours =
+                        atoll(PQgetvalue(res, i, 25));
+                }
+
+
+                /*
+                 * last_seen
+                 */
+                if (!PQgetisnull(res, i, 26))
+                {
                     strncpy(T_devstate[i].last_seen,
-                            PQgetvalue(res, i, 22),
+                            PQgetvalue(res, i, 26),
                             sizeof(T_devstate[i].last_seen) - 1);
                 }
 
-                /* street_name */
-                if (!PQgetisnull(res, i, 23))
+
+                /*
+                 * street_name
+                 */
+                if (!PQgetisnull(res, i, 27))
                 {
                     strncpy(T_devstate[i].street_name,
-                            PQgetvalue(res, i, 23),
+                            PQgetvalue(res, i, 27),
                             sizeof(T_devstate[i].street_name) - 1);
                 }
 
-                /* lamp_type */
-                if (!PQgetisnull(res, i, 24))
+
+                /*
+                 * lamp_type
+                 */
+                if (!PQgetisnull(res, i, 28))
                 {
                     strncpy(T_devstate[i].lamp_type,
-                            PQgetvalue(res, i, 24),
+                            PQgetvalue(res, i, 28),
                             sizeof(T_devstate[i].lamp_type) - 1);
                 }
 
-                /* rated_watts */
-                if (!PQgetisnull(res, i, 25))
+
+                /*
+                 * rated_watts
+                 */
+                if (!PQgetisnull(res, i, 29))
                 {
                     T_devstate[i].rated_watts =
-                        atof(PQgetvalue(res, i, 25));
+                        atof(PQgetvalue(res, i, 29));
                 }
 
-                /* created_at */
-                if (!PQgetisnull(res, i, 26))
+
+                /*
+                 * created_at
+                 */
+                if (!PQgetisnull(res, i, 30))
                 {
                     strncpy(T_devstate[i].created_at,
-                            PQgetvalue(res, i, 26),
+                            PQgetvalue(res, i, 30),
                             sizeof(T_devstate[i].created_at) - 1);
                 }
 
-                /* updated_at */
-                if (!PQgetisnull(res, i, 27))
+
+                /*
+                 * updated_at
+                 */
+                if (!PQgetisnull(res, i, 31))
                 {
                     strncpy(T_devstate[i].updated_at,
-                            PQgetvalue(res, i, 27),
+                            PQgetvalue(res, i, 31),
                             sizeof(T_devstate[i].updated_at) - 1);
                 }
 
+
 #ifdef _DEBUG_DB_READ
-                printf("light_id       : %s\n", T_devstate[i].light_id);
-                printf("zone_id        : %d\n", T_devstate[i].zone_id);
-                printf("lat            : %.6f\n", T_devstate[i].lat);
-                printf("lng            : %.6f\n", T_devstate[i].lng);
-                printf("status         : %s\n", T_devstate[i].status);
-                printf("dimming_level  : %d\n", T_devstate[i].dimming_level);
+
+                printf("light_id        : %s\n",
+                       T_devstate[i].light_id);
+
+                printf("devtype         : %d\n",
+                       T_devstate[i].devtype);
+
+                printf("zone_id         : %d\n",
+                       T_devstate[i].zone_id);
+
+                printf("lat             : %.6f\n",
+                       T_devstate[i].lat);
+
+                printf("lng             : %.6f\n",
+                       T_devstate[i].lng);
+
+                printf("status          : %s\n",
+                       T_devstate[i].status);
+
+                printf("dimming_level   : %d\n",
+                       T_devstate[i].dimming_level);
+
 
                 for (int g = 0; g < 3; g++)
                 {
-                    printf("rgbg%d          : EN=%d R=%u G=%u B=%u\n",
-                           g + 1,
-                           T_devstate[i].rgb[g].enable ? 1 : 0,
-                           (unsigned)T_devstate[i].rgb[g].r,
-                           (unsigned)T_devstate[i].rgb[g].g,
-                           (unsigned)T_devstate[i].rgb[g].b);
+                    printf(
+                        "rgbg%d           : EN=%d R=%u G=%u B=%u\n",
+                        g + 1,
+                        T_devstate[i].rgb[g].enable ? 1 : 0,
+                        (unsigned)T_devstate[i].rgb[g].r,
+                        (unsigned)T_devstate[i].rgb[g].g,
+                        (unsigned)T_devstate[i].rgb[g].b);
                 }
 
-                printf("power_watts    : %.2f\n", T_devstate[i].power_watts);
-                printf("voltage        : %.2f\n", T_devstate[i].voltage);
-                printf("temperature_c  : %.2f\n", T_devstate[i].temperature_c);
-                printf("burn_hours     : %lld\n",
+
+                printf("mode            : %d\n",
+                       T_devstate[i].mode);
+
+                printf("device_date_time: %s\n",
+                       T_devstate[i].device_date_time);
+
+                printf("auto_program    : %d\n",
+                       T_devstate[i].auto_program);
+
+                printf("power_watts     : %.2f\n",
+                       T_devstate[i].power_watts);
+
+                printf("voltage         : %.2f\n",
+                       T_devstate[i].voltage);
+
+                printf("temperature_c   : %.2f\n",
+                       T_devstate[i].temperature_c);
+
+                printf("burn_hours      : %lld\n",
                        (long long)T_devstate[i].burn_hours);
-                printf("last_seen      : %s\n", T_devstate[i].last_seen);
-                printf("street_name    : %s\n", T_devstate[i].street_name);
-                printf("lamp_type      : %s\n", T_devstate[i].lamp_type);
-                printf("rated_watts    : %.2f\n", T_devstate[i].rated_watts);
-                printf("created_at     : %s\n", T_devstate[i].created_at);
-                printf("updated_at     : %s\n", T_devstate[i].updated_at);
+
+                printf("last_seen       : %s\n",
+                       T_devstate[i].last_seen);
+
+                printf("street_name     : %s\n",
+                       T_devstate[i].street_name);
+
+                printf("lamp_type       : %s\n",
+                       T_devstate[i].lamp_type);
+
+                printf("rated_watts     : %.2f\n",
+                       T_devstate[i].rated_watts);
+
+                printf("created_at      : %s\n",
+                       T_devstate[i].created_at);
+
+                printf("updated_at      : %s\n",
+                       T_devstate[i].updated_at);
+
 #endif
             }
         }
     }
+
 
     PQclear(res);
     PQfinish(conn);
