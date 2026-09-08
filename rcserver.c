@@ -29,6 +29,7 @@
 #include "storefiles.h"
 #include "db.h"
 #include "db_devstate.h"
+#include "db_devcalendar.h"
 #include "loop2app.h"
 #include "nethubbin.h"
 
@@ -320,6 +321,7 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             {
                 TxHubStatus.SStatus = SS_STS_ONLINE;
                 printf("devtype %02X\n ", pdev_eqid->devtype);
+                
                 if(pdev_eqid->devtype == 0x40) 
                 {
                     TxHubStatus.SStatus |= SSTATUS_STS_DMX_ENABLE;
@@ -334,9 +336,6 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                         TxLTMdxCfg.Cmd = LT_CMD_MDX_CFG | RC_CMD_SERVERSIDE;
                         TxLTMdxCfg.Seq = p_stRxHubStatus->Seq;
                         TxLTMdxCfg.MdxSeq = SessionData_T_dev[devidx]._DmxSeq;
-                        
-
-
                     }
                 }
             }

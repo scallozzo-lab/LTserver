@@ -837,6 +837,110 @@ VALUES
 (5, NOW() - INTERVAL '1 hour',   1148.200, 41, 76.8, 2, 305.6);
 
 
+
+-- =========================================================
+-- SAMPLE DATA - DEVCALENDAR - MON-001
+-- =========================================================
+
+INSERT INTO devcalendar (
+    light_id,
+    event_id,
+    enabled,
+    start_hour,
+    start_minute,
+    end_hour,
+    end_minute,
+    days_mask,
+    action,
+    rgbg1_r, rgbg1_g, rgbg1_b,
+    rgbg2_r, rgbg2_g, rgbg2_b,
+    rgbg3_r, rgbg3_g, rgbg3_b,
+    dimming
+)
+VALUES
+
+-- Evento 0
+-- Todos los días 18:00 -> 20:00
+-- Grupo 1 rojo, Grupo 2 verde, Grupo 3 azul
+(
+    'MON-001',
+    0,
+    TRUE,
+    18, 0,
+    20, 0,
+    127,
+    3,
+    255,   0,   0,
+      0, 255,   0,
+      0,   0, 255,
+    100
+),
+
+-- Evento 1
+-- Lunes a viernes 20:00 -> 22:00
+(
+    'MON-001',
+    1,
+    TRUE,
+    20, 0,
+    22, 0,
+    31,
+    3,
+    255, 255,   0,
+      0, 255, 255,
+    255,   0, 255,
+    90
+),
+
+-- Evento 2
+-- Sábado y domingo 19:30 -> 23:30
+(
+    'MON-001',
+    2,
+    TRUE,
+    19, 30,
+    23, 30,
+    96,
+    4,
+    255, 128,   0,
+    128,   0, 255,
+      0, 128, 255,
+    80
+),
+
+-- Evento 3
+-- Todos los días 23:30 -> 23:59
+(
+    'MON-001',
+    3,
+    TRUE,
+    23, 30,
+    23, 59,
+    127,
+    5,
+    255, 255, 255,
+    100, 100, 255,
+    255, 100, 100,
+    60
+),
+
+-- Evento 4
+-- Evento deshabilitado para probar enabled = FALSE
+(
+    'MON-001',
+    4,
+    FALSE,
+    0, 0,
+    0, 0,
+    0,
+    0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0
+);
+
+
 -- =========================================================
 -- PERMISSIONS
 -- =========================================================

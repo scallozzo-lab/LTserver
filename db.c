@@ -40,6 +40,7 @@ int _Init_dbread(void)
     int ret = _DB_STS_OK;
     _InitDb_devices();
     _InitDb_devstate();
+    _InitDb_devcalendar();
     ret = _dbread_bulk();
 }
 
@@ -50,6 +51,7 @@ int _dbread_bulk(void)
     //ret |= _dbread_table_sector(); 
     ret |= _dbread_table_devices();
     ret |= _dbread_table_devstate();
+    ret |= _dbread_table_devcalendar();
     return ret;
 }
 
