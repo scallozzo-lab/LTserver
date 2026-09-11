@@ -41,6 +41,26 @@ static unsigned char RxBuffer[_RXBUFFER_SIZE];
 static stBTxVFile BTxVFile[_MAXSTOREV];
 
 
+void GetDateTime(rtc_soft_t *rtc)
+{
+    time_t now;
+    struct tm t;
+
+    if (!rtc)
+        return;
+
+    now = time(NULL);
+
+    localtime_r(&now, &t);
+
+    rtc->sec   = (uint8_t)t.tm_sec;
+    rtc->min   = (uint8_t)t.tm_min;
+    rtc->hour  = (uint8_t)t.tm_hour;
+    rtc->day   = (uint8_t)t.tm_mday;
+    rtc->month = (uint8_t)(t.tm_mon + 1);
+    rtc->year  = (uint16_t)(t.tm_year + 1900);
+}
+
 int _GetTimer1ms(void)
 {
     return clock() / (CLOCKS_PER_SEC / 1000);
@@ -444,6 +464,9 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 TxHubStatus.HubVer[2] = _GetNetHubFileInfo()->ver[2];
             }
 
+            TxHubStatus.TxConfig = 0;  // Tiempo expresado en segundos para la transmisión de hubstatus
+            GetDateTime(&TxHubStatus.rtc);
+          
             TxHubStatus.Crc = crc_ccitt((uint8_t*)&TxHubStatus, sizeof(TxHubStatus) - sizeof(TxHubStatus.Crc));
             
             if(_Send2EQ(rxaddr, (uint8_t*)&TxHubStatus, sizeof(TxHubStatus)))
