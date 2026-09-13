@@ -421,6 +421,7 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 stDb_T_devstate *p_devstate = _Stfind_Devstate(pdev_eqid->light_id);
                 if(p_devstate)
                 {
+                    printf("** devstate mode %u\n", p_devstate->mode);
                     printf("RGB0 = %d %u %u %u %u \n",
                         p_devstate->rgb[0].enable,
                         p_devstate->rgb[0].r,
@@ -465,8 +466,6 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                         TxHubStatus.SRequest = 1;
                         TxHubStatus.DevbitList[0] = (uint8_t)p_devstate->mode;
                     }
-                    else
-                        printf("Error devstate no encontrado\n");
                 }
             }
             else
