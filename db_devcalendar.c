@@ -64,25 +64,58 @@ int _dbread_table_devcalendar(void)
 
     PGresult *res = PQexec(conn,
         "SELECT "
-        "light_id, "          /*  0 */
-        "event_id, "          /*  1 */
-        "enabled, "           /*  2 */
-        "start_hour, "        /*  3 */
-        "start_minute, "      /*  4 */
-        "end_hour, "          /*  5 */
-        "end_minute, "        /*  6 */
-        "days_mask, "         /*  7 */
-        "action, "            /*  8 */
-        "rgbg1_r, "           /*  9 */
-        "rgbg1_g, "           /* 10 */
-        "rgbg1_b, "           /* 11 */
-        "rgbg2_r, "           /* 12 */
-        "rgbg2_g, "           /* 13 */
-        "rgbg2_b, "           /* 14 */
-        "rgbg3_r, "           /* 15 */
-        "rgbg3_g, "           /* 16 */
-        "rgbg3_b, "           /* 17 */
-        "dimming "            /* 18 */
+        "light_id, "              /*  0 */
+        "event_id, "              /*  1 */
+        "enabled, "               /*  2 */
+
+        /* FRANJA 1 */
+        "start_hour, "            /*  3 */
+        "start_minute, "          /*  4 */
+        "end_hour, "              /*  5 */
+        "end_minute, "            /*  6 */
+
+        /* FRANJA 2 */
+        "enabled_t2, "            /*  7 */
+        "start_hour_t2, "         /*  8 */
+        "start_minute_t2, "       /*  9 */
+        "end_hour_t2, "           /* 10 */
+        "end_minute_t2, "         /* 11 */
+
+        "days_mask, "             /* 12 */
+        "action, "                /* 13 */
+
+        /* RGBW GROUP 1 */
+        "rgbg1_r, "               /* 14 */
+        "rgbg1_g, "               /* 15 */
+        "rgbg1_b, "               /* 16 */
+        "rgbg1_w, "               /* 17 */
+
+        /* RGBW GROUP 2 */
+        "rgbg2_r, "               /* 18 */
+        "rgbg2_g, "               /* 19 */
+        "rgbg2_b, "               /* 20 */
+        "rgbg2_w, "               /* 21 */
+
+        /* RGBW GROUP 3 */
+        "rgbg3_r, "               /* 22 */
+        "rgbg3_g, "               /* 23 */
+        "rgbg3_b, "               /* 24 */
+        "rgbg3_w, "               /* 25 */
+
+        /* RGBW GROUP 4 */
+        "rgbg4_r, "               /* 26 */
+        "rgbg4_g, "               /* 27 */
+        "rgbg4_b, "               /* 28 */
+        "rgbg4_w, "               /* 29 */
+
+        /* REFLECTORES */
+        "reflector1_enable, "      /* 30 */
+        "reflector1_on, "          /* 31 */
+        "reflector2_enable, "      /* 32 */
+        "reflector2_on, "          /* 33 */
+
+        "dimming "                 /* 34 */
+
         "FROM devcalendar "
         "ORDER BY light_id, event_id"
     );
@@ -113,13 +146,18 @@ int _dbread_table_devcalendar(void)
 #endif
 
 
-    if (cols != 19)
+    /*
+     * Total actual: 35 columnas
+     */
+    if (cols != 35)
     {
 #ifdef _DEBUG_DB_READ
-        printf("[_dbread_table_devcalendar] Error! Columns (%d)\n", cols);
+        printf("[_dbread_table_devcalendar] Error! Columns (%d)\n",
+               cols);
 #endif
 
-        _log("[_dbread_table_devcalendar] Error! Columns (%d)\n", cols);
+        _log("[_dbread_table_devcalendar] Error! Columns (%d)\n",
+             cols);
 
         PQclear(res);
         PQfinish(conn);
@@ -140,8 +178,11 @@ int _dbread_table_devcalendar(void)
     {
         const char *light_id = PQgetvalue(res, i, 0);
 
+
         /*
-         * Nuevo dispositivo
+         * =====================================================
+         * NUEVO DISPOSITIVO
+         * =====================================================
          */
         if (strcmp(last_light_id, light_id) != 0)
         {
@@ -149,30 +190,42 @@ int _dbread_table_devcalendar(void)
 
             if (dev_index >= _CANT_MAX_EQ)
             {
-                printf("[_dbread_table_devcalendar] Error! MAX devices\n");
+                printf(
+                    "[_dbread_table_devcalendar] Error! MAX devices\n");
 
-                _log("[_dbread_table_devcalendar] Error! MAX devices\n");
+                _log(
+                    "[_dbread_table_devcalendar] Error! MAX devices\n");
 
                 ret = _DB_STS_ERR_STRUCT;
                 break;
             }
 
-            strncpy(T_devcalendar[dev_index].light_id,
-                    light_id,
-                    sizeof(T_devcalendar[dev_index].light_id) - 1);
 
-            strncpy(last_light_id,
-                    light_id,
-                    sizeof(last_light_id) - 1);
+            strncpy(
+                T_devcalendar[dev_index].light_id,
+                light_id,
+                sizeof(T_devcalendar[dev_index].light_id) - 1);
+
+
+            strncpy(
+                last_light_id,
+                light_id,
+                sizeof(last_light_id) - 1);
         }
 
 
+        /*
+         * =====================================================
+         * EVENT ID
+         * =====================================================
+         */
         int event_id = atoi(PQgetvalue(res, i, 1));
 
         if (event_id < 0 || event_id >= _MAXCALENDARLST)
         {
-            printf("[_dbread_table_devcalendar] Invalid event_id: %d\n",
-                   event_id);
+            printf(
+                "[_dbread_table_devcalendar] Invalid event_id: %d\n",
+                event_id);
 
             continue;
         }
@@ -183,93 +236,279 @@ int _dbread_table_devcalendar(void)
 
 
         /*
-         * enabled
+         * =====================================================
+         * ENABLE EVENTO
+         * =====================================================
          */
         if (!PQgetisnull(res, i, 2))
         {
             const char *v = PQgetvalue(res, i, 2);
 
             pevent->enabled =
-                (v[0] == 't' || v[0] == 'T' || v[0] == '1');
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
         }
 
 
+        /*
+         * =====================================================
+         * FRANJA HORARIA 1
+         * =====================================================
+         */
+
         if (!PQgetisnull(res, i, 3))
+        {
             pevent->start_hour =
                 (uint8_t)atoi(PQgetvalue(res, i, 3));
+        }
+
 
         if (!PQgetisnull(res, i, 4))
+        {
             pevent->start_minute =
                 (uint8_t)atoi(PQgetvalue(res, i, 4));
+        }
+
 
         if (!PQgetisnull(res, i, 5))
+        {
             pevent->end_hour =
                 (uint8_t)atoi(PQgetvalue(res, i, 5));
+        }
+
 
         if (!PQgetisnull(res, i, 6))
+        {
             pevent->end_minute =
                 (uint8_t)atoi(PQgetvalue(res, i, 6));
+        }
+
+
+        /*
+         * =====================================================
+         * FRANJA HORARIA 2
+         * =====================================================
+         */
 
         if (!PQgetisnull(res, i, 7))
-            pevent->days_mask =
-                (uint8_t)atoi(PQgetvalue(res, i, 7));
+        {
+            const char *v = PQgetvalue(res, i, 7);
+
+            pevent->enabled_t2 =
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
+        }
+
 
         if (!PQgetisnull(res, i, 8))
-            pevent->action =
+        {
+            pevent->start_hour_t2 =
                 (uint8_t)atoi(PQgetvalue(res, i, 8));
+        }
 
 
-        /*
-         * RGB GROUP 1
-         */
         if (!PQgetisnull(res, i, 9))
-            pevent->r_g1 =
+        {
+            pevent->start_minute_t2 =
                 (uint8_t)atoi(PQgetvalue(res, i, 9));
+        }
+
 
         if (!PQgetisnull(res, i, 10))
-            pevent->g_g1 =
+        {
+            pevent->end_hour_t2 =
                 (uint8_t)atoi(PQgetvalue(res, i, 10));
+        }
+
 
         if (!PQgetisnull(res, i, 11))
-            pevent->b_g1 =
+        {
+            pevent->end_minute_t2 =
                 (uint8_t)atoi(PQgetvalue(res, i, 11));
+        }
 
 
         /*
-         * RGB GROUP 2
+         * =====================================================
+         * DIAS / ACCION
+         * =====================================================
          */
+
         if (!PQgetisnull(res, i, 12))
-            pevent->r_g2 =
+        {
+            pevent->days_mask =
                 (uint8_t)atoi(PQgetvalue(res, i, 12));
+        }
+
 
         if (!PQgetisnull(res, i, 13))
-            pevent->g_g2 =
+        {
+            pevent->action =
                 (uint8_t)atoi(PQgetvalue(res, i, 13));
-
-        if (!PQgetisnull(res, i, 14))
-            pevent->b_g2 =
-                (uint8_t)atoi(PQgetvalue(res, i, 14));
+        }
 
 
         /*
-         * RGB GROUP 3
+         * =====================================================
+         * RGBW GROUP 1
+         * =====================================================
          */
+
+        if (!PQgetisnull(res, i, 14))
+            pevent->r_g1 =
+                (uint8_t)atoi(PQgetvalue(res, i, 14));
+
         if (!PQgetisnull(res, i, 15))
-            pevent->r_g3 =
+            pevent->g_g1 =
                 (uint8_t)atoi(PQgetvalue(res, i, 15));
 
         if (!PQgetisnull(res, i, 16))
-            pevent->g_g3 =
+            pevent->b_g1 =
                 (uint8_t)atoi(PQgetvalue(res, i, 16));
 
         if (!PQgetisnull(res, i, 17))
-            pevent->b_g3 =
+            pevent->w_g1 =
                 (uint8_t)atoi(PQgetvalue(res, i, 17));
 
 
+        /*
+         * =====================================================
+         * RGBW GROUP 2
+         * =====================================================
+         */
+
         if (!PQgetisnull(res, i, 18))
-            pevent->dimming =
+            pevent->r_g2 =
                 (uint8_t)atoi(PQgetvalue(res, i, 18));
+
+        if (!PQgetisnull(res, i, 19))
+            pevent->g_g2 =
+                (uint8_t)atoi(PQgetvalue(res, i, 19));
+
+        if (!PQgetisnull(res, i, 20))
+            pevent->b_g2 =
+                (uint8_t)atoi(PQgetvalue(res, i, 20));
+
+        if (!PQgetisnull(res, i, 21))
+            pevent->w_g2 =
+                (uint8_t)atoi(PQgetvalue(res, i, 21));
+
+
+        /*
+         * =====================================================
+         * RGBW GROUP 3
+         * =====================================================
+         */
+
+        if (!PQgetisnull(res, i, 22))
+            pevent->r_g3 =
+                (uint8_t)atoi(PQgetvalue(res, i, 22));
+
+        if (!PQgetisnull(res, i, 23))
+            pevent->g_g3 =
+                (uint8_t)atoi(PQgetvalue(res, i, 23));
+
+        if (!PQgetisnull(res, i, 24))
+            pevent->b_g3 =
+                (uint8_t)atoi(PQgetvalue(res, i, 24));
+
+        if (!PQgetisnull(res, i, 25))
+            pevent->w_g3 =
+                (uint8_t)atoi(PQgetvalue(res, i, 25));
+
+
+        /*
+         * =====================================================
+         * RGBW GROUP 4
+         * =====================================================
+         */
+
+        if (!PQgetisnull(res, i, 26))
+            pevent->r_g4 =
+                (uint8_t)atoi(PQgetvalue(res, i, 26));
+
+        if (!PQgetisnull(res, i, 27))
+            pevent->g_g4 =
+                (uint8_t)atoi(PQgetvalue(res, i, 27));
+
+        if (!PQgetisnull(res, i, 28))
+            pevent->b_g4 =
+                (uint8_t)atoi(PQgetvalue(res, i, 28));
+
+        if (!PQgetisnull(res, i, 29))
+            pevent->w_g4 =
+                (uint8_t)atoi(PQgetvalue(res, i, 29));
+
+
+        /*
+         * =====================================================
+         * REFLECTOR 1
+         * =====================================================
+         */
+
+        if (!PQgetisnull(res, i, 30))
+        {
+            const char *v = PQgetvalue(res, i, 30);
+
+            pevent->reflector1_enable =
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
+        }
+
+
+        if (!PQgetisnull(res, i, 31))
+        {
+            const char *v = PQgetvalue(res, i, 31);
+
+            pevent->reflector1_on =
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
+        }
+
+
+        /*
+         * =====================================================
+         * REFLECTOR 2
+         * =====================================================
+         */
+
+        if (!PQgetisnull(res, i, 32))
+        {
+            const char *v = PQgetvalue(res, i, 32);
+
+            pevent->reflector2_enable =
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
+        }
+
+
+        if (!PQgetisnull(res, i, 33))
+        {
+            const char *v = PQgetvalue(res, i, 33);
+
+            pevent->reflector2_on =
+                (v[0] == 't' ||
+                 v[0] == 'T' ||
+                 v[0] == '1');
+        }
+
+
+        /*
+         * =====================================================
+         * DIMMING
+         * =====================================================
+         */
+
+        if (!PQgetisnull(res, i, 34))
+        {
+            pevent->dimming =
+                (uint8_t)atoi(PQgetvalue(res, i, 34));
+        }
 
 
 #ifdef _DEBUG_DB_READ
@@ -278,32 +517,82 @@ int _dbread_table_devcalendar(void)
                T_devcalendar[dev_index].light_id,
                event_id);
 
-        printf("enabled      : %d\n", pevent->enabled);
-        printf("start        : %02u:%02u\n",
-               pevent->start_hour,
-               pevent->start_minute);
 
-        printf("end          : %02u:%02u\n",
+        printf("enabled      : %d\n",
+               pevent->enabled ? 1 : 0);
+
+
+        /*
+         * FRANJA 1
+         */
+        printf("time 1       : %02u:%02u -> %02u:%02u\n",
+               pevent->start_hour,
+               pevent->start_minute,
                pevent->end_hour,
                pevent->end_minute);
 
-        printf("days_mask    : %02X\n", pevent->days_mask);
-        printf("action       : %u\n", pevent->action);
 
-        printf("RGB G1       : %u %u %u\n",
+        /*
+         * FRANJA 2
+         */
+        printf("time 2       : EN=%d %02u:%02u -> %02u:%02u\n",
+               pevent->enabled_t2 ? 1 : 0,
+               pevent->start_hour_t2,
+               pevent->start_minute_t2,
+               pevent->end_hour_t2,
+               pevent->end_minute_t2);
+
+
+        printf("days_mask    : %02X\n",
+               pevent->days_mask);
+
+        printf("action       : %u\n",
+               pevent->action);
+
+
+        /*
+         * RGBW
+         */
+        printf("RGBW G1      : %u %u %u %u\n",
                pevent->r_g1,
                pevent->g_g1,
-               pevent->b_g1);
+               pevent->b_g1,
+               pevent->w_g1);
 
-        printf("RGB G2       : %u %u %u\n",
+
+        printf("RGBW G2      : %u %u %u %u\n",
                pevent->r_g2,
                pevent->g_g2,
-               pevent->b_g2);
+               pevent->b_g2,
+               pevent->w_g2);
 
-        printf("RGB G3       : %u %u %u\n",
+
+        printf("RGBW G3      : %u %u %u %u\n",
                pevent->r_g3,
                pevent->g_g3,
-               pevent->b_g3);
+               pevent->b_g3,
+               pevent->w_g3);
+
+
+        printf("RGBW G4      : %u %u %u %u\n",
+               pevent->r_g4,
+               pevent->g_g4,
+               pevent->b_g4,
+               pevent->w_g4);
+
+
+        /*
+         * REFLECTORES
+         */
+        printf("reflector1   : EN=%d ON=%d\n",
+               pevent->reflector1_enable ? 1 : 0,
+               pevent->reflector1_on ? 1 : 0);
+
+
+        printf("reflector2   : EN=%d ON=%d\n",
+               pevent->reflector2_enable ? 1 : 0,
+               pevent->reflector2_on ? 1 : 0);
+
 
         printf("dimming      : %u\n",
                pevent->dimming);
@@ -318,6 +607,7 @@ int _dbread_table_devcalendar(void)
     return ret;
 }
 
+// OJO HAY QUE RE-HACER. LA ESCRUCTURA CAMBIO
 int _dbwrite_devcalendar(stDb_T_devcalendar *pdev)
 {
     if (pdev == NULL)

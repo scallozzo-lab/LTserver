@@ -338,6 +338,13 @@ CREATE TABLE devcalendar
     end_hour        SMALLINT NOT NULL DEFAULT 0,
     end_minute      SMALLINT NOT NULL DEFAULT 0,
 
+    enabled_t2      BOOLEAN NOT NULL DEFAULT FALSE,
+
+    start_hour_t2   SMALLINT NOT NULL DEFAULT 0,
+    start_minute_t2 SMALLINT NOT NULL DEFAULT 0,
+    end_hour_t2     SMALLINT NOT NULL DEFAULT 0,
+    end_minute_t2   SMALLINT NOT NULL DEFAULT 0,
+
     days_mask       SMALLINT NOT NULL DEFAULT 0,
 
     action          SMALLINT NOT NULL DEFAULT 0,
@@ -362,6 +369,12 @@ CREATE TABLE devcalendar
     rgbg4_b         SMALLINT NOT NULL DEFAULT 0,
     rgbg4_w         SMALLINT NOT NULL DEFAULT 0,
 
+    reflector1_enable BOOLEAN NOT NULL DEFAULT FALSE,
+    reflector1_on BOOLEAN NOT NULL DEFAULT FALSE,
+   
+    reflector2_enable BOOLEAN NOT NULL DEFAULT FALSE,
+    reflector2_on BOOLEAN NOT NULL DEFAULT FALSE,
+    
     dimming         SMALLINT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (light_id, event_id)
@@ -900,106 +913,221 @@ VALUES
 (5, NOW() - INTERVAL '1 hour',   1148.200, 41, 76.8, 2, 305.6);
 
 
-
 -- =========================================================
 -- SAMPLE DATA - DEVCALENDAR - MON-001
+-- Nueva estructura:
+--   - 2 franjas horarias
+--   - 4 grupos RGBW
+--   - 2 grupos de reflectores
 -- =========================================================
 
 INSERT INTO devcalendar (
     light_id,
     event_id,
     enabled,
+
     start_hour,
     start_minute,
     end_hour,
     end_minute,
+
+    enabled_t2,
+    start_hour_t2,
+    start_minute_t2,
+    end_hour_t2,
+    end_minute_t2,
+
     days_mask,
     action,
-    rgbg1_r, rgbg1_g, rgbg1_b,
-    rgbg2_r, rgbg2_g, rgbg2_b,
-    rgbg3_r, rgbg3_g, rgbg3_b,
+
+    rgbg1_r, rgbg1_g, rgbg1_b, rgbg1_w,
+    rgbg2_r, rgbg2_g, rgbg2_b, rgbg2_w,
+    rgbg3_r, rgbg3_g, rgbg3_b, rgbg3_w,
+    rgbg4_r, rgbg4_g, rgbg4_b, rgbg4_w,
+
+    reflector1_enable,
+    reflector1_on,
+
+    reflector2_enable,
+    reflector2_on,
+    
     dimming
 )
 VALUES
 
+-- =========================================================
 -- Evento 0
--- Todos los días 18:00 -> 20:00
--- Grupo 1 rojo, Grupo 2 verde, Grupo 3 azul
+-- Todos los días
+-- Franja 1: 20:00 -> 23:59
+-- Franja 2: 00:00 -> 06:00
+-- RGBW:
+--   G1 rojo
+--   G2 verde
+--   G3 azul
+--   G4 blanco
+-- Reflectores 1 y 2 encendidos
+-- =========================================================
 (
     'MON-001',
     0,
     TRUE,
-    18, 0,
+
     20, 0,
+    23, 59,
+
+    TRUE,
+    0, 0,
+    6, 0,
+
     127,
-    3,
-    255,   0,   0,
-      0, 255,   0,
-      0,   0, 255,
+    1,
+
+    255,   0,   0,   0,
+      0, 255,   0,   0,
+      0,   0, 255,   0,
+      0,   0,   0, 255,
+
+    TRUE,
+    TRUE,
+    TRUE,
+    TRUE,
+
     100
 ),
 
+-- =========================================================
 -- Evento 1
--- Lunes a viernes 20:00 -> 22:00
+-- Lunes a viernes
+-- Franja 1: 18:00 -> 20:00
+-- Franja 2 deshabilitada
+-- Reflector 1 ON
+-- Reflector 2 OFF
+-- =========================================================
 (
     'MON-001',
     1,
     TRUE,
+
+    18, 0,
     20, 0,
-    22, 0,
+
+    FALSE,
+    0, 0,
+    0, 0,
+
     31,
-    3,
-    255, 255,   0,
-      0, 255, 255,
-    255,   0, 255,
+    1,
+
+    255, 255,   0,   0,
+      0, 255, 255,   0,
+    255,   0, 255,   0,
+    128, 128, 128,  64,
+
+    TRUE,
+    FALSE,
+    TRUE,
+    FALSE,
+
     90
 ),
 
+-- =========================================================
 -- Evento 2
--- Sábado y domingo 19:30 -> 23:30
+-- Sábado y domingo
+-- Franja 1: 19:30 -> 23:30
+-- Franja 2: 00:00 -> 02:00
+-- =========================================================
 (
     'MON-001',
     2,
     TRUE,
+
     19, 30,
     23, 30,
+
+    TRUE,
+    0, 0,
+    2, 0,
+
     96,
-    4,
-    255, 128,   0,
-    128,   0, 255,
-      0, 128, 255,
+    2,
+
+    255, 128,   0,   0,
+    128,   0, 255,   0,
+      0, 128, 255,   0,
+     64,  64,  64, 128,
+
+    FALSE,
+    TRUE,
+    FALSE,
+    TRUE,
+
     80
 ),
 
+-- =========================================================
 -- Evento 3
--- Todos los días 23:30 -> 23:59
+-- Todos los días
+-- Franja 1: 23:30 -> 23:59
+-- Segunda franja deshabilitada
+-- =========================================================
 (
     'MON-001',
     3,
     TRUE,
+
     23, 30,
     23, 59,
+
+    FALSE,
+    0, 0,
+    0, 0,
+
     127,
-    5,
-    255, 255, 255,
-    100, 100, 255,
-    255, 100, 100,
+    3,
+
+    255, 255, 255,   0,
+    100, 100, 255,   0,
+    255, 100, 100,   0,
+      0,   0,   0, 255,
+
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+
     60
 ),
 
+-- =========================================================
 -- Evento 4
--- Evento deshabilitado para probar enabled = FALSE
+-- Evento completamente deshabilitado
+-- =========================================================
 (
     'MON-001',
     4,
     FALSE,
+
     0, 0,
     0, 0,
+
+    FALSE,
+    0, 0,
+    0, 0,
+
     0,
     0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
+
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+
+    FALSE,
+    FALSE,
+    TRUE,
+    TRUE,
+	
     0
 );
 

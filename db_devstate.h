@@ -10,11 +10,10 @@
 typedef struct
 {
     bool     enable;
-
     uint8_t  r;
     uint8_t  g;
     uint8_t  b;
-
+    uint8_t  w;
 } stRgbGroup;
 
 typedef struct
@@ -33,7 +32,14 @@ typedef struct
     /*
      * RGB Groups
      */
-    stRgbGroup rgb[3];
+    stRgbGroup rgb[4];
+    
+    // Reflectores 220V
+    bool reflector1_enable;
+    bool reflector1_on;
+    bool reflector2_enable;
+    bool reflector2_on;
+
     int32_t devtype;
     int32_t mode;
     char    device_date_time[32];
