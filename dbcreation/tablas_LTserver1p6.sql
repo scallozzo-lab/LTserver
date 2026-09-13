@@ -256,19 +256,36 @@ CREATE TABLE devstate (
     rgbg1_r           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_r BETWEEN 0 AND 255),
     rgbg1_g           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_g BETWEEN 0 AND 255),
     rgbg1_b           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_b BETWEEN 0 AND 255),
+    rgbg1_w           INTEGER NOT NULL DEFAULT 0 CHECK (rgbg1_w BETWEEN 0 AND 255),
 
     -- Grupo RGB 2
     rgbg2_enable    BOOLEAN NOT NULL DEFAULT FALSE,
     rgbg2_r         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_r BETWEEN 0 AND 255),
     rgbg2_g         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_g BETWEEN 0 AND 255),
     rgbg2_b         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_b BETWEEN 0 AND 255),
+    rgbg2_w         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg2_w BETWEEN 0 AND 255),
 
     -- Grupo RGB 3
     rgbg3_enable    BOOLEAN NOT NULL DEFAULT FALSE,
     rgbg3_r         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_r BETWEEN 0 AND 255),
     rgbg3_g         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_g BETWEEN 0 AND 255),
     rgbg3_b         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_b BETWEEN 0 AND 255),
+    rgbg3_w         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg3_w BETWEEN 0 AND 255),
 
+ -- Grupo RGB 4
+    rgbg4_enable    BOOLEAN NOT NULL DEFAULT FALSE,
+    rgbg4_r         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg4_r BETWEEN 0 AND 255),
+    rgbg4_g         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg4_g BETWEEN 0 AND 255),
+    rgbg4_b         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg4_b BETWEEN 0 AND 255),
+    rgbg4_w         INTEGER NOT NULL DEFAULT 0 CHECK (rgbg4_w BETWEEN 0 AND 255),
+
+-- Reflectores 220V
+    reflector1_enable BOOLEAN NOT NULL DEFAULT FALSE,
+    reflector1_on     BOOLEAN NOT NULL DEFAULT FALSE,
+
+    reflector2_enable BOOLEAN NOT NULL DEFAULT FALSE,
+    reflector2_on     BOOLEAN NOT NULL DEFAULT FALSE,
+   
     -- Modo actual
     -- 0 = Apagado
     -- 1 = Modo manual
@@ -328,14 +345,22 @@ CREATE TABLE devcalendar
     rgbg1_r         SMALLINT NOT NULL DEFAULT 0,
     rgbg1_g         SMALLINT NOT NULL DEFAULT 0,
     rgbg1_b         SMALLINT NOT NULL DEFAULT 0,
+    rgbg1_w         SMALLINT NOT NULL DEFAULT 0,
 
     rgbg2_r         SMALLINT NOT NULL DEFAULT 0,
     rgbg2_g         SMALLINT NOT NULL DEFAULT 0,
     rgbg2_b         SMALLINT NOT NULL DEFAULT 0,
+    rgbg2_w         SMALLINT NOT NULL DEFAULT 0,
 
     rgbg3_r         SMALLINT NOT NULL DEFAULT 0,
     rgbg3_g         SMALLINT NOT NULL DEFAULT 0,
     rgbg3_b         SMALLINT NOT NULL DEFAULT 0,
+    rgbg3_w         SMALLINT NOT NULL DEFAULT 0,
+
+    rgbg4_r         SMALLINT NOT NULL DEFAULT 0,
+    rgbg4_g         SMALLINT NOT NULL DEFAULT 0,
+    rgbg4_b         SMALLINT NOT NULL DEFAULT 0,
+    rgbg4_w         SMALLINT NOT NULL DEFAULT 0,
 
     dimming         SMALLINT NOT NULL DEFAULT 0,
 
@@ -680,16 +705,32 @@ INSERT INTO devstate (
     rgbg1_r,
     rgbg1_g,
     rgbg1_b,
+    rgbg1_w,
+
 
     rgbg2_enable,
     rgbg2_r,
     rgbg2_g,
     rgbg2_b,
+    rgbg2_w,
     
     rgbg3_enable,
     rgbg3_r,
     rgbg3_g,
     rgbg3_b,
+    rgbg3_w,
+ 
+    rgbg4_enable,
+    rgbg4_r,
+    rgbg4_g,
+    rgbg4_b,
+    rgbg4_w,
+    
+    reflector1_enable,
+    reflector1_on,
+
+    reflector2_enable,
+    reflector2_on,
     
     mode,
     device_date_time,
@@ -716,21 +757,43 @@ VALUES (
     'on',
     100,
 
-    -- RGB actual: blanco
+    -- RGB G1 actual: blanco
     true,
     100,
     255,
     120,
+    255,
 
+  -- RGB G2 actual: blanco
     true,
     100,
     100,
     100,
+    100,
 
-    false,
-    0,
-    0,
-    0,
+  -- RGB G3 actual: blanco
+    true,
+    50,
+    50,
+    50,
+    50,
+
+  -- RGB G4 actual: blanco     
+    true,
+    128,
+    128,
+    128,
+    128,
+   
+    -- Reflecto1
+    true,
+    true,
+    
+    -- Reflecto2
+    true,
+    true,
+    
+    
     -- Modo actual: Color fijo
     3,
 

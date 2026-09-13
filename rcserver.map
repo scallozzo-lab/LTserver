@@ -4,8 +4,8 @@ Merging program properties
 
 As-needed library included to satisfy reference by file (symbol)
 
-libpq.so.5                    /tmp/ccQEej4D.o (PQstatus)
-libc.so.6                     /tmp/cc2axFbv.o (clock@@GLIBC_2.2.5)
+libpq.so.5                    /tmp/ccvod27j.o (PQstatus)
+libc.so.6                     /tmp/ccfSDrCv.o (clock@@GLIBC_2.2.5)
 
 Discarded input sections
 
@@ -20,57 +20,57 @@ Discarded input sections
  .note.gnu.property
                 0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/cc2axFbv.o
+                0x0000000000000000        0x0 /tmp/ccfSDrCv.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/cc2axFbv.o
+                0x0000000000000000       0x20 /tmp/ccfSDrCv.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/cczs6It0.o
+                0x0000000000000000        0x0 /tmp/ccDwNE62.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/cczs6It0.o
+                0x0000000000000000       0x20 /tmp/ccDwNE62.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccIfglgJ.o
+                0x0000000000000000        0x0 /tmp/ccES180X.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccIfglgJ.o
+                0x0000000000000000       0x20 /tmp/ccES180X.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccWtpD6G.o
+                0x0000000000000000        0x0 /tmp/cc5Ptiuf.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccWtpD6G.o
+                0x0000000000000000       0x20 /tmp/cc5Ptiuf.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccpIAT4o.o
+                0x0000000000000000        0x0 /tmp/ccEHqubQ.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccpIAT4o.o
+                0x0000000000000000       0x20 /tmp/ccEHqubQ.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccJ5Xrm3.o
+                0x0000000000000000        0x0 /tmp/cc3wvKSl.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccJ5Xrm3.o
+                0x0000000000000000       0x20 /tmp/cc3wvKSl.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccruIdOY.o
+                0x0000000000000000        0x0 /tmp/ccX9t3Oq.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccruIdOY.o
+                0x0000000000000000       0x20 /tmp/ccX9t3Oq.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccQEej4D.o
+                0x0000000000000000        0x0 /tmp/ccvod27j.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccQEej4D.o
+                0x0000000000000000       0x20 /tmp/ccvod27j.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccs27uSi.o
+                0x0000000000000000        0x0 /tmp/ccfsgwqO.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccs27uSi.o
+                0x0000000000000000       0x20 /tmp/ccfsgwqO.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccwz0kGq.o
+                0x0000000000000000        0x0 /tmp/ccwZ7Kc8.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccwz0kGq.o
+                0x0000000000000000       0x20 /tmp/ccwZ7Kc8.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccE89tlP.o
+                0x0000000000000000        0x0 /tmp/ccyjlVb8.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccE89tlP.o
+                0x0000000000000000       0x20 /tmp/ccyjlVb8.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccQp5AQa.o
+                0x0000000000000000        0x0 /tmp/cchLYi8j.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccQp5AQa.o
+                0x0000000000000000       0x20 /tmp/cchLYi8j.o
  .note.GNU-stack
-                0x0000000000000000        0x0 /tmp/ccDJFFrp.o
+                0x0000000000000000        0x0 /tmp/cc5wuUrI.o
  .note.gnu.property
-                0x0000000000000000       0x20 /tmp/ccDJFFrp.o
+                0x0000000000000000       0x20 /tmp/cc5wuUrI.o
  .note.GNU-stack
                 0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
  .note.gnu.property
@@ -90,19 +90,19 @@ Linker script and memory map
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
-LOAD /tmp/cc2axFbv.o
-LOAD /tmp/cczs6It0.o
-LOAD /tmp/ccIfglgJ.o
-LOAD /tmp/ccWtpD6G.o
-LOAD /tmp/ccpIAT4o.o
-LOAD /tmp/ccJ5Xrm3.o
-LOAD /tmp/ccruIdOY.o
-LOAD /tmp/ccQEej4D.o
-LOAD /tmp/ccs27uSi.o
-LOAD /tmp/ccwz0kGq.o
-LOAD /tmp/ccE89tlP.o
-LOAD /tmp/ccQp5AQa.o
-LOAD /tmp/ccDJFFrp.o
+LOAD /tmp/ccfSDrCv.o
+LOAD /tmp/ccDwNE62.o
+LOAD /tmp/ccES180X.o
+LOAD /tmp/cc5Ptiuf.o
+LOAD /tmp/ccEHqubQ.o
+LOAD /tmp/cc3wvKSl.o
+LOAD /tmp/ccX9t3Oq.o
+LOAD /tmp/ccvod27j.o
+LOAD /tmp/ccfsgwqO.o
+LOAD /tmp/ccwZ7Kc8.o
+LOAD /tmp/ccyjlVb8.o
+LOAD /tmp/cchLYi8j.o
+LOAD /tmp/cc5wuUrI.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/libpq.so
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/libgcc.a
 LOAD /usr/lib/gcc/x86_64-linux-gnu/11/libgcc_s.so
@@ -306,7 +306,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  .text          0x0000000000002826        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
  *fill*         0x0000000000002826        0xa 
  .text          0x0000000000002830       0xb9 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
- .text          0x00000000000028e9     0x2960 /tmp/cc2axFbv.o
+ .text          0x00000000000028e9     0x2960 /tmp/ccfSDrCv.o
                 0x00000000000028e9                GetDateTime
                 0x0000000000002996                _GetTimer1ms
                 0x00000000000029c9                sigintHandler
@@ -323,10 +323,10 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000004e79                _ProcTxVFileTimeout
                 0x0000000000004f67                _Proc10msFuncs
                 0x0000000000005088                main
- .text          0x0000000000005249      0x232 /tmp/cczs6It0.o
+ .text          0x0000000000005249      0x232 /tmp/ccDwNE62.o
                 0x0000000000005249                CalcCrc16
                 0x00000000000053e9                crc_ccitt
- .text          0x000000000000547b      0xfcb /tmp/ccIfglgJ.o
+ .text          0x000000000000547b      0xfcb /tmp/ccES180X.o
                 0x000000000000547b                _strcpyln
                 0x00000000000054fb                _InitStoreFiles
                 0x000000000000551f                _Look4Free
@@ -335,7 +335,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000005662                _ProcStFilesTimeout
                 0x0000000000005771                _CreateFolder
                 0x000000000000586c                _StoreFile
- .text          0x0000000000006446      0x3f9 /tmp/ccWtpD6G.o
+ .text          0x0000000000006446      0x3f9 /tmp/cc5Ptiuf.o
                 0x0000000000006446                Hex2Bin
                 0x00000000000065d8                _Init_dbread
                 0x000000000000660f                _dbread_bulk
@@ -344,21 +344,21 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x000000000000677f                _Findtargetfolder
                 0x00000000000067bf                _CheckEq
                 0x00000000000067ff                _CheckHubId
- .text          0x000000000000683f      0x18c /tmp/ccpIAT4o.o
+ .text          0x000000000000683f      0x18c /tmp/ccEHqubQ.o
                 0x000000000000683f                _EncriptDecript
                 0x000000000000695b                strcopys
- .text          0x00000000000069cb      0x46a /tmp/ccJ5Xrm3.o
+ .text          0x00000000000069cb      0x46a /tmp/cc3wvKSl.o
                 0x00000000000069cb                init_loop2app
                 0x0000000000006b05                udp_receive
                 0x0000000000006c6b                udp_send
                 0x0000000000006d7f                test_loop
- .text          0x0000000000006e35      0x750 /tmp/ccruIdOY.o
+ .text          0x0000000000006e35      0x750 /tmp/ccX9t3Oq.o
                 0x0000000000007097                _GetTotBinFrames
                 0x00000000000070b9                _LoadNetHubBin
                 0x000000000000742a                _GetNetHubFileInfo
                 0x000000000000744d                _Create_Hub
                 0x0000000000007519                _Find_Hub
- .text          0x0000000000007585     0x1eeb /tmp/ccQEej4D.o
+ .text          0x0000000000007585     0x1eeb /tmp/ccvod27j.o
                 0x0000000000007585                _dbread_devstate_size
                 0x00000000000075d9                _Stfind_Devstate
                 0x0000000000007693                _Stfind_Devstate_ByZone
@@ -366,23 +366,23 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000008bb6                _dbwrite_devstate
                 0x00000000000090b7                _dbcheck_devstate
                 0x000000000000943c                _InitDb_devstate
- .text          0x0000000000009470     0x1079 /tmp/ccs27uSi.o
+ .text          0x0000000000009470     0x1079 /tmp/ccfsgwqO.o
                 0x0000000000009470                _DbDeviceEventTypeToString
                 0x00000000000094f4                _DbDeviceEventSeverityToString
                 0x0000000000009550                _DbDeviceEventTypeFromString
                 0x000000000000968c                _DbDeviceEventSeverityFromString
                 0x0000000000009738                _dbread_deviceevent
                 0x0000000000009f90                _dbinsert_deviceevent
- .text          0x000000000000a4e9      0x368 /tmp/ccwz0kGq.o
+ .text          0x000000000000a4e9      0x368 /tmp/ccwZ7Kc8.o
                 0x000000000000a4e9                _dbread_db_version
- .text          0x000000000000a851      0xf07 /tmp/ccE89tlP.o
+ .text          0x000000000000a851      0xf07 /tmp/ccyjlVb8.o
                 0x000000000000a851                _dbalarm_type_from_string
                 0x000000000000a945                _dbalarm_type_to_string
                 0x000000000000a9b9                _dbalarm_severity_from_string
                 0x000000000000aa65                _dbalarm_severity_to_string
                 0x000000000000aac3                _dbread_alarm
                 0x000000000000b342                _dbinsert_alarm
- .text          0x000000000000b758     0x19a8 /tmp/ccQp5AQa.o
+ .text          0x000000000000b758     0x19a8 /tmp/cchLYi8j.o
                 0x000000000000b758                _dbread_devices_size
                 0x000000000000b7b2                _Stfind_Devices
                 0x000000000000b881                _Stfind_Devices_ByEqid
@@ -390,7 +390,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x000000000000bb70                _dbread_table_devices
                 0x000000000000ccfd                _dbcheck_devices
                 0x000000000000d09a                _InitDb_devices
- .text          0x000000000000d100     0x15bb /tmp/ccDJFFrp.o
+ .text          0x000000000000d100     0x15bb /tmp/cc5wuUrI.o
                 0x000000000000d100                _dbread_devcalendar_size
                 0x000000000000d154                _Stfind_Devcalendar
                 0x000000000000d20e                _dbread_table_devcalendar
@@ -417,28 +417,28 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  .rodata.cst4   0x000000000000f000        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                 0x000000000000f000                _IO_stdin_used
  *fill*         0x000000000000f004        0x4 
- .rodata        0x000000000000f008      0xe24 /tmp/cc2axFbv.o
+ .rodata        0x000000000000f008      0xe24 /tmp/ccfSDrCv.o
  *fill*         0x000000000000fe2c       0x14 
- .rodata        0x000000000000fe40      0x222 /tmp/cczs6It0.o
+ .rodata        0x000000000000fe40      0x222 /tmp/ccDwNE62.o
  *fill*         0x0000000000010062        0x6 
- .rodata        0x0000000000010068      0x213 /tmp/ccIfglgJ.o
+ .rodata        0x0000000000010068      0x213 /tmp/ccES180X.o
  *fill*         0x000000000001027b        0x5 
- .rodata        0x0000000000010280       0x28 /tmp/ccWtpD6G.o
- .rodata        0x00000000000102a8       0x8f /tmp/ccpIAT4o.o
+ .rodata        0x0000000000010280       0x28 /tmp/cc5Ptiuf.o
+ .rodata        0x00000000000102a8       0x8f /tmp/ccEHqubQ.o
  *fill*         0x0000000000010337        0x1 
- .rodata        0x0000000000010338       0xbb /tmp/ccJ5Xrm3.o
+ .rodata        0x0000000000010338       0xbb /tmp/cc3wvKSl.o
  *fill*         0x00000000000103f3        0x5 
- .rodata        0x00000000000103f8      0x1a1 /tmp/ccruIdOY.o
+ .rodata        0x00000000000103f8      0x1a1 /tmp/ccX9t3Oq.o
  *fill*         0x0000000000010599        0x7 
- .rodata        0x00000000000105a0      0x7db /tmp/ccQEej4D.o
+ .rodata        0x00000000000105a0      0x7db /tmp/ccvod27j.o
  *fill*         0x0000000000010d7b        0x5 
- .rodata        0x0000000000010d80      0x608 /tmp/ccs27uSi.o
- .rodata        0x0000000000011388      0x180 /tmp/ccwz0kGq.o
- .rodata        0x0000000000011508      0x523 /tmp/ccE89tlP.o
+ .rodata        0x0000000000010d80      0x608 /tmp/ccfsgwqO.o
+ .rodata        0x0000000000011388      0x180 /tmp/ccwZ7Kc8.o
+ .rodata        0x0000000000011508      0x523 /tmp/ccyjlVb8.o
  *fill*         0x0000000000011a2b        0x5 
- .rodata        0x0000000000011a30      0x58a /tmp/ccQp5AQa.o
+ .rodata        0x0000000000011a30      0x58a /tmp/cchLYi8j.o
  *fill*         0x0000000000011fba        0x6 
- .rodata        0x0000000000011fc0      0x8c7 /tmp/ccDJFFrp.o
+ .rodata        0x0000000000011fc0      0x8c7 /tmp/cc5wuUrI.o
 
 .rodata1
  *(.rodata1)
@@ -460,31 +460,31 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                                          0x30 (size before relaxing)
  .eh_frame      0x0000000000012bb0       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                                          0x30 (size before relaxing)
- .eh_frame      0x0000000000012bc8      0x200 /tmp/cc2axFbv.o
+ .eh_frame      0x0000000000012bc8      0x200 /tmp/ccfSDrCv.o
                                         0x218 (size before relaxing)
- .eh_frame      0x0000000000012dc8       0x40 /tmp/cczs6It0.o
+ .eh_frame      0x0000000000012dc8       0x40 /tmp/ccDwNE62.o
                                          0x58 (size before relaxing)
- .eh_frame      0x0000000000012e08      0x108 /tmp/ccIfglgJ.o
+ .eh_frame      0x0000000000012e08      0x108 /tmp/ccES180X.o
                                         0x120 (size before relaxing)
- .eh_frame      0x0000000000012f10      0x100 /tmp/ccWtpD6G.o
+ .eh_frame      0x0000000000012f10      0x100 /tmp/cc5Ptiuf.o
                                         0x118 (size before relaxing)
- .eh_frame      0x0000000000013010       0x40 /tmp/ccpIAT4o.o
+ .eh_frame      0x0000000000013010       0x40 /tmp/ccEHqubQ.o
                                          0x58 (size before relaxing)
- .eh_frame      0x0000000000013050       0x80 /tmp/ccJ5Xrm3.o
+ .eh_frame      0x0000000000013050       0x80 /tmp/cc3wvKSl.o
                                          0x98 (size before relaxing)
- .eh_frame      0x00000000000130d0      0x100 /tmp/ccruIdOY.o
+ .eh_frame      0x00000000000130d0      0x100 /tmp/ccX9t3Oq.o
                                         0x118 (size before relaxing)
- .eh_frame      0x00000000000131d0       0xe0 /tmp/ccQEej4D.o
+ .eh_frame      0x00000000000131d0       0xe0 /tmp/ccvod27j.o
                                          0xf8 (size before relaxing)
- .eh_frame      0x00000000000132b0       0xc0 /tmp/ccs27uSi.o
+ .eh_frame      0x00000000000132b0       0xc0 /tmp/ccfsgwqO.o
                                          0xd8 (size before relaxing)
- .eh_frame      0x0000000000013370       0x20 /tmp/ccwz0kGq.o
+ .eh_frame      0x0000000000013370       0x20 /tmp/ccwZ7Kc8.o
                                          0x38 (size before relaxing)
- .eh_frame      0x0000000000013390       0xc0 /tmp/ccE89tlP.o
+ .eh_frame      0x0000000000013390       0xc0 /tmp/ccyjlVb8.o
                                          0xd8 (size before relaxing)
- .eh_frame      0x0000000000013450       0xe0 /tmp/ccQp5AQa.o
+ .eh_frame      0x0000000000013450       0xe0 /tmp/cchLYi8j.o
                                          0xf8 (size before relaxing)
- .eh_frame      0x0000000000013530       0xc0 /tmp/ccDJFFrp.o
+ .eh_frame      0x0000000000013530       0xc0 /tmp/cc5wuUrI.o
                                          0xd8 (size before relaxing)
  .eh_frame      0x00000000000135f0        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
  *(.eh_frame.*)
@@ -587,19 +587,19 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  .data.rel.local
                 0x0000000000015008        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
                 0x0000000000015008                __dso_handle
- .data          0x0000000000015010        0x0 /tmp/cc2axFbv.o
- .data          0x0000000000015010        0x0 /tmp/cczs6It0.o
- .data          0x0000000000015010        0x0 /tmp/ccIfglgJ.o
- .data          0x0000000000015010        0x0 /tmp/ccWtpD6G.o
- .data          0x0000000000015010        0x0 /tmp/ccpIAT4o.o
- .data          0x0000000000015010        0x0 /tmp/ccJ5Xrm3.o
- .data          0x0000000000015010        0x0 /tmp/ccruIdOY.o
- .data          0x0000000000015010        0x0 /tmp/ccQEej4D.o
- .data          0x0000000000015010        0x0 /tmp/ccs27uSi.o
- .data          0x0000000000015010        0x0 /tmp/ccwz0kGq.o
- .data          0x0000000000015010        0x0 /tmp/ccE89tlP.o
- .data          0x0000000000015010        0x0 /tmp/ccQp5AQa.o
- .data          0x0000000000015010        0x0 /tmp/ccDJFFrp.o
+ .data          0x0000000000015010        0x0 /tmp/ccfSDrCv.o
+ .data          0x0000000000015010        0x0 /tmp/ccDwNE62.o
+ .data          0x0000000000015010        0x0 /tmp/ccES180X.o
+ .data          0x0000000000015010        0x0 /tmp/cc5Ptiuf.o
+ .data          0x0000000000015010        0x0 /tmp/ccEHqubQ.o
+ .data          0x0000000000015010        0x0 /tmp/cc3wvKSl.o
+ .data          0x0000000000015010        0x0 /tmp/ccX9t3Oq.o
+ .data          0x0000000000015010        0x0 /tmp/ccvod27j.o
+ .data          0x0000000000015010        0x0 /tmp/ccfsgwqO.o
+ .data          0x0000000000015010        0x0 /tmp/ccwZ7Kc8.o
+ .data          0x0000000000015010        0x0 /tmp/ccyjlVb8.o
+ .data          0x0000000000015010        0x0 /tmp/cchLYi8j.o
+ .data          0x0000000000015010        0x0 /tmp/cc5wuUrI.o
  .data          0x0000000000015010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
  .data          0x0000000000015010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 
@@ -626,35 +626,35 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  .bss           0x0000000000015028        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
  .bss           0x0000000000015028        0x1 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
  *fill*         0x0000000000015029       0x17 
- .bss           0x0000000000015040   0x13c781 /tmp/cc2axFbv.o
+ .bss           0x0000000000015040   0x13c781 /tmp/ccfSDrCv.o
                 0x0000000000015040                sockfd
                 0x0000000000015044                RCServer
                 0x0000000000015050                servaddr
                 0x0000000000015060                cliaddr
  *fill*         0x00000000001517c1        0x3 
- .bss           0x00000000001517c4        0x4 /tmp/cczs6It0.o
+ .bss           0x00000000001517c4        0x4 /tmp/ccDwNE62.o
  *fill*         0x00000000001517c8       0x18 
- .bss           0x00000000001517e0     0x7081 /tmp/ccIfglgJ.o
+ .bss           0x00000000001517e0     0x7081 /tmp/ccES180X.o
                 0x00000000001517e0                _StoreV
  *fill*         0x0000000000158861       0x1f 
- .bss           0x0000000000158880   0x111700 /tmp/ccWtpD6G.o
+ .bss           0x0000000000158880   0x111700 /tmp/cc5Ptiuf.o
                 0x0000000000158880                T_sector
- .bss           0x0000000000269f80        0x0 /tmp/ccpIAT4o.o
- .bss           0x0000000000269f80      0x420 /tmp/ccJ5Xrm3.o
- .bss           0x000000000026a3a0    0x10aa0 /tmp/ccruIdOY.o
- .bss           0x000000000027ae40   0x530224 /tmp/ccQEej4D.o
+ .bss           0x0000000000269f80        0x0 /tmp/ccEHqubQ.o
+ .bss           0x0000000000269f80      0x420 /tmp/cc3wvKSl.o
+ .bss           0x000000000026a3a0    0x10aa0 /tmp/ccX9t3Oq.o
+ .bss           0x000000000027ae40   0x530224 /tmp/ccvod27j.o
                 0x000000000027ae40                T_devstate
                 0x00000000007ab040                devstate_info
- .bss           0x00000000007ab064        0x0 /tmp/ccs27uSi.o
- .bss           0x00000000007ab064        0x0 /tmp/ccwz0kGq.o
- .bss           0x00000000007ab064        0x0 /tmp/ccE89tlP.o
+ .bss           0x00000000007ab064        0x0 /tmp/ccfsgwqO.o
+ .bss           0x00000000007ab064        0x0 /tmp/ccwZ7Kc8.o
+ .bss           0x00000000007ab064        0x0 /tmp/ccyjlVb8.o
  *fill*         0x00000000007ab064       0x1c 
- .bss           0x00000000007ab080   0x426064 /tmp/ccQp5AQa.o
+ .bss           0x00000000007ab080   0x426064 /tmp/cchLYi8j.o
                 0x00000000007ab080                T_devices
                 0x0000000000ba2a80                SessionData_T_dev
                 0x0000000000bd10c0                devices_info
  *fill*         0x0000000000bd10e4       0x1c 
- .bss           0x0000000000bd1100   0x14c0a4 /tmp/ccDJFFrp.o
+ .bss           0x0000000000bd1100   0x14c0a4 /tmp/cc5wuUrI.o
                 0x0000000000bd1100                T_devcalendar
                 0x0000000000d1d180                devcalendar_info
  .bss           0x0000000000d1d1a4        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
@@ -703,19 +703,19 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  *(.comment)
  .comment       0x0000000000000000       0x2d /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
                                          0x2e (size before relaxing)
- .comment       0x000000000000002d       0x2e /tmp/cc2axFbv.o
- .comment       0x000000000000002d       0x2e /tmp/cczs6It0.o
- .comment       0x000000000000002d       0x2e /tmp/ccIfglgJ.o
- .comment       0x000000000000002d       0x2e /tmp/ccWtpD6G.o
- .comment       0x000000000000002d       0x2e /tmp/ccpIAT4o.o
- .comment       0x000000000000002d       0x2e /tmp/ccJ5Xrm3.o
- .comment       0x000000000000002d       0x2e /tmp/ccruIdOY.o
- .comment       0x000000000000002d       0x2e /tmp/ccQEej4D.o
- .comment       0x000000000000002d       0x2e /tmp/ccs27uSi.o
- .comment       0x000000000000002d       0x2e /tmp/ccwz0kGq.o
- .comment       0x000000000000002d       0x2e /tmp/ccE89tlP.o
- .comment       0x000000000000002d       0x2e /tmp/ccQp5AQa.o
- .comment       0x000000000000002d       0x2e /tmp/ccDJFFrp.o
+ .comment       0x000000000000002d       0x2e /tmp/ccfSDrCv.o
+ .comment       0x000000000000002d       0x2e /tmp/ccDwNE62.o
+ .comment       0x000000000000002d       0x2e /tmp/ccES180X.o
+ .comment       0x000000000000002d       0x2e /tmp/cc5Ptiuf.o
+ .comment       0x000000000000002d       0x2e /tmp/ccEHqubQ.o
+ .comment       0x000000000000002d       0x2e /tmp/cc3wvKSl.o
+ .comment       0x000000000000002d       0x2e /tmp/ccX9t3Oq.o
+ .comment       0x000000000000002d       0x2e /tmp/ccvod27j.o
+ .comment       0x000000000000002d       0x2e /tmp/ccfsgwqO.o
+ .comment       0x000000000000002d       0x2e /tmp/ccwZ7Kc8.o
+ .comment       0x000000000000002d       0x2e /tmp/ccyjlVb8.o
+ .comment       0x000000000000002d       0x2e /tmp/cchLYi8j.o
+ .comment       0x000000000000002d       0x2e /tmp/cc5wuUrI.o
  .comment       0x000000000000002d       0x2e /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
 
 .gnu.build.attributes
@@ -736,113 +736,113 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 .debug_aranges  0x0000000000000000      0x270
  *(.debug_aranges)
  .debug_aranges
-                0x0000000000000000       0x30 /tmp/cc2axFbv.o
+                0x0000000000000000       0x30 /tmp/ccfSDrCv.o
  .debug_aranges
-                0x0000000000000030       0x30 /tmp/cczs6It0.o
+                0x0000000000000030       0x30 /tmp/ccDwNE62.o
  .debug_aranges
-                0x0000000000000060       0x30 /tmp/ccIfglgJ.o
+                0x0000000000000060       0x30 /tmp/ccES180X.o
  .debug_aranges
-                0x0000000000000090       0x30 /tmp/ccWtpD6G.o
+                0x0000000000000090       0x30 /tmp/cc5Ptiuf.o
  .debug_aranges
-                0x00000000000000c0       0x30 /tmp/ccpIAT4o.o
+                0x00000000000000c0       0x30 /tmp/ccEHqubQ.o
  .debug_aranges
-                0x00000000000000f0       0x30 /tmp/ccJ5Xrm3.o
+                0x00000000000000f0       0x30 /tmp/cc3wvKSl.o
  .debug_aranges
-                0x0000000000000120       0x30 /tmp/ccruIdOY.o
+                0x0000000000000120       0x30 /tmp/ccX9t3Oq.o
  .debug_aranges
-                0x0000000000000150       0x30 /tmp/ccQEej4D.o
+                0x0000000000000150       0x30 /tmp/ccvod27j.o
  .debug_aranges
-                0x0000000000000180       0x30 /tmp/ccs27uSi.o
+                0x0000000000000180       0x30 /tmp/ccfsgwqO.o
  .debug_aranges
-                0x00000000000001b0       0x30 /tmp/ccwz0kGq.o
+                0x00000000000001b0       0x30 /tmp/ccwZ7Kc8.o
  .debug_aranges
-                0x00000000000001e0       0x30 /tmp/ccE89tlP.o
+                0x00000000000001e0       0x30 /tmp/ccyjlVb8.o
  .debug_aranges
-                0x0000000000000210       0x30 /tmp/ccQp5AQa.o
+                0x0000000000000210       0x30 /tmp/cchLYi8j.o
  .debug_aranges
-                0x0000000000000240       0x30 /tmp/ccDJFFrp.o
+                0x0000000000000240       0x30 /tmp/cc5wuUrI.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
 .debug_info     0x0000000000000000     0x92c0
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x0000000000000000     0x24d0 /tmp/cc2axFbv.o
- .debug_info    0x00000000000024d0      0x217 /tmp/cczs6It0.o
- .debug_info    0x00000000000026e7      0xc22 /tmp/ccIfglgJ.o
- .debug_info    0x0000000000003309      0x8f5 /tmp/ccWtpD6G.o
- .debug_info    0x0000000000003bfe      0x181 /tmp/ccpIAT4o.o
- .debug_info    0x0000000000003d7f      0x746 /tmp/ccJ5Xrm3.o
- .debug_info    0x00000000000044c5      0xa75 /tmp/ccruIdOY.o
- .debug_info    0x0000000000004f3a      0xde9 /tmp/ccQEej4D.o
- .debug_info    0x0000000000005d23      0xa97 /tmp/ccs27uSi.o
- .debug_info    0x00000000000067ba      0x67b /tmp/ccwz0kGq.o
- .debug_info    0x0000000000006e35      0xa62 /tmp/ccE89tlP.o
- .debug_info    0x0000000000007897      0xca6 /tmp/ccQp5AQa.o
- .debug_info    0x000000000000853d      0xd83 /tmp/ccDJFFrp.o
+ .debug_info    0x0000000000000000     0x24d0 /tmp/ccfSDrCv.o
+ .debug_info    0x00000000000024d0      0x217 /tmp/ccDwNE62.o
+ .debug_info    0x00000000000026e7      0xc22 /tmp/ccES180X.o
+ .debug_info    0x0000000000003309      0x8f5 /tmp/cc5Ptiuf.o
+ .debug_info    0x0000000000003bfe      0x181 /tmp/ccEHqubQ.o
+ .debug_info    0x0000000000003d7f      0x746 /tmp/cc3wvKSl.o
+ .debug_info    0x00000000000044c5      0xa75 /tmp/ccX9t3Oq.o
+ .debug_info    0x0000000000004f3a      0xde9 /tmp/ccvod27j.o
+ .debug_info    0x0000000000005d23      0xa97 /tmp/ccfsgwqO.o
+ .debug_info    0x00000000000067ba      0x67b /tmp/ccwZ7Kc8.o
+ .debug_info    0x0000000000006e35      0xa62 /tmp/ccyjlVb8.o
+ .debug_info    0x0000000000007897      0xca6 /tmp/cchLYi8j.o
+ .debug_info    0x000000000000853d      0xd83 /tmp/cc5wuUrI.o
 
 .debug_abbrev   0x0000000000000000     0x1e37
  *(.debug_abbrev)
- .debug_abbrev  0x0000000000000000      0x47a /tmp/cc2axFbv.o
- .debug_abbrev  0x000000000000047a      0x119 /tmp/cczs6It0.o
- .debug_abbrev  0x0000000000000593      0x268 /tmp/ccIfglgJ.o
- .debug_abbrev  0x00000000000007fb      0x251 /tmp/ccWtpD6G.o
- .debug_abbrev  0x0000000000000a4c       0xe5 /tmp/ccpIAT4o.o
- .debug_abbrev  0x0000000000000b31      0x21c /tmp/ccJ5Xrm3.o
- .debug_abbrev  0x0000000000000d4d      0x2b3 /tmp/ccruIdOY.o
- .debug_abbrev  0x0000000000001000      0x2b0 /tmp/ccQEej4D.o
- .debug_abbrev  0x00000000000012b0      0x252 /tmp/ccs27uSi.o
- .debug_abbrev  0x0000000000001502      0x194 /tmp/ccwz0kGq.o
- .debug_abbrev  0x0000000000001696      0x25d /tmp/ccE89tlP.o
- .debug_abbrev  0x00000000000018f3      0x2bd /tmp/ccQp5AQa.o
- .debug_abbrev  0x0000000000001bb0      0x287 /tmp/ccDJFFrp.o
+ .debug_abbrev  0x0000000000000000      0x47a /tmp/ccfSDrCv.o
+ .debug_abbrev  0x000000000000047a      0x119 /tmp/ccDwNE62.o
+ .debug_abbrev  0x0000000000000593      0x268 /tmp/ccES180X.o
+ .debug_abbrev  0x00000000000007fb      0x251 /tmp/cc5Ptiuf.o
+ .debug_abbrev  0x0000000000000a4c       0xe5 /tmp/ccEHqubQ.o
+ .debug_abbrev  0x0000000000000b31      0x21c /tmp/cc3wvKSl.o
+ .debug_abbrev  0x0000000000000d4d      0x2b3 /tmp/ccX9t3Oq.o
+ .debug_abbrev  0x0000000000001000      0x2b0 /tmp/ccvod27j.o
+ .debug_abbrev  0x00000000000012b0      0x252 /tmp/ccfsgwqO.o
+ .debug_abbrev  0x0000000000001502      0x194 /tmp/ccwZ7Kc8.o
+ .debug_abbrev  0x0000000000001696      0x25d /tmp/ccyjlVb8.o
+ .debug_abbrev  0x00000000000018f3      0x2bd /tmp/cchLYi8j.o
+ .debug_abbrev  0x0000000000001bb0      0x287 /tmp/cc5wuUrI.o
 
 .debug_line     0x0000000000000000     0x36df
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x0000000000000000      0xc25 /tmp/cc2axFbv.o
- .debug_line    0x0000000000000c25      0x133 /tmp/cczs6It0.o
- .debug_line    0x0000000000000d58      0x455 /tmp/ccIfglgJ.o
- .debug_line    0x00000000000011ad      0x1be /tmp/ccWtpD6G.o
- .debug_line    0x000000000000136b      0x100 /tmp/ccpIAT4o.o
- .debug_line    0x000000000000146b      0x1c8 /tmp/ccJ5Xrm3.o
- .debug_line    0x0000000000001633      0x2ea /tmp/ccruIdOY.o
- .debug_line    0x000000000000191d      0x7a0 /tmp/ccQEej4D.o
- .debug_line    0x00000000000020bd      0x3ea /tmp/ccs27uSi.o
- .debug_line    0x00000000000024a7      0x134 /tmp/ccwz0kGq.o
- .debug_line    0x00000000000025db      0x46c /tmp/ccE89tlP.o
- .debug_line    0x0000000000002a47      0x64f /tmp/ccQp5AQa.o
- .debug_line    0x0000000000003096      0x649 /tmp/ccDJFFrp.o
+ .debug_line    0x0000000000000000      0xc25 /tmp/ccfSDrCv.o
+ .debug_line    0x0000000000000c25      0x133 /tmp/ccDwNE62.o
+ .debug_line    0x0000000000000d58      0x455 /tmp/ccES180X.o
+ .debug_line    0x00000000000011ad      0x1be /tmp/cc5Ptiuf.o
+ .debug_line    0x000000000000136b      0x100 /tmp/ccEHqubQ.o
+ .debug_line    0x000000000000146b      0x1c8 /tmp/cc3wvKSl.o
+ .debug_line    0x0000000000001633      0x2ea /tmp/ccX9t3Oq.o
+ .debug_line    0x000000000000191d      0x7a0 /tmp/ccvod27j.o
+ .debug_line    0x00000000000020bd      0x3ea /tmp/ccfsgwqO.o
+ .debug_line    0x00000000000024a7      0x134 /tmp/ccwZ7Kc8.o
+ .debug_line    0x00000000000025db      0x46c /tmp/ccyjlVb8.o
+ .debug_line    0x0000000000002a47      0x64f /tmp/cchLYi8j.o
+ .debug_line    0x0000000000003096      0x649 /tmp/cc5wuUrI.o
 
 .debug_frame
  *(.debug_frame)
 
 .debug_str      0x0000000000000000     0x2065
  *(.debug_str)
- .debug_str     0x0000000000000000     0x11f2 /tmp/cc2axFbv.o
+ .debug_str     0x0000000000000000     0x11f2 /tmp/ccfSDrCv.o
                                        0x1409 (size before relaxing)
- .debug_str     0x00000000000011f2       0x2e /tmp/cczs6It0.o
+ .debug_str     0x00000000000011f2       0x2e /tmp/ccDwNE62.o
                                         0x16d (size before relaxing)
- .debug_str     0x0000000000001220      0x307 /tmp/ccIfglgJ.o
+ .debug_str     0x0000000000001220      0x307 /tmp/ccES180X.o
                                         0x7db (size before relaxing)
- .debug_str     0x0000000000001527       0xf2 /tmp/ccWtpD6G.o
+ .debug_str     0x0000000000001527       0xf2 /tmp/cc5Ptiuf.o
                                         0x5b7 (size before relaxing)
- .debug_str     0x0000000000001619        0x7 /tmp/ccpIAT4o.o
+ .debug_str     0x0000000000001619        0x7 /tmp/ccEHqubQ.o
                                         0x143 (size before relaxing)
- .debug_str     0x0000000000001620       0xd1 /tmp/ccJ5Xrm3.o
+ .debug_str     0x0000000000001620       0xd1 /tmp/cc3wvKSl.o
                                         0x467 (size before relaxing)
- .debug_str     0x00000000000016f1       0xdf /tmp/ccruIdOY.o
+ .debug_str     0x00000000000016f1       0xdf /tmp/ccX9t3Oq.o
                                         0x57a (size before relaxing)
- .debug_str     0x00000000000017d0      0x3a5 /tmp/ccQEej4D.o
+ .debug_str     0x00000000000017d0      0x3a5 /tmp/ccvod27j.o
                                         0x96b (size before relaxing)
- .debug_str     0x0000000000001b75      0x24e /tmp/ccs27uSi.o
+ .debug_str     0x0000000000001b75      0x24e /tmp/ccfsgwqO.o
                                         0x93d (size before relaxing)
- .debug_str     0x0000000000001dc3       0x25 /tmp/ccwz0kGq.o
+ .debug_str     0x0000000000001dc3       0x25 /tmp/ccwZ7Kc8.o
                                         0x6a0 (size before relaxing)
- .debug_str     0x0000000000001de8      0x1ae /tmp/ccE89tlP.o
+ .debug_str     0x0000000000001de8      0x1ae /tmp/ccyjlVb8.o
                                         0x91a (size before relaxing)
- .debug_str     0x0000000000001f96       0x4c /tmp/ccQp5AQa.o
+ .debug_str     0x0000000000001f96       0x4c /tmp/cchLYi8j.o
                                         0x954 (size before relaxing)
- .debug_str     0x0000000000001fe2       0x83 /tmp/ccDJFFrp.o
+ .debug_str     0x0000000000001fe2       0x83 /tmp/cc5wuUrI.o
                                         0x92c (size before relaxing)
 
 .debug_loc
@@ -876,43 +876,43 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000000000      0x33f
  *(.debug_line_str)
  .debug_line_str
-                0x0000000000000000      0x21d /tmp/cc2axFbv.o
+                0x0000000000000000      0x21d /tmp/ccfSDrCv.o
                                         0x26f (size before relaxing)
  .debug_line_str
-                0x000000000000021d        0x6 /tmp/cczs6It0.o
+                0x000000000000021d        0x6 /tmp/ccDwNE62.o
                                          0xe1 (size before relaxing)
  .debug_line_str
-                0x0000000000000223       0x34 /tmp/ccIfglgJ.o
+                0x0000000000000223       0x34 /tmp/ccES180X.o
                                         0x1b3 (size before relaxing)
  .debug_line_str
-                0x0000000000000257        0x5 /tmp/ccWtpD6G.o
+                0x0000000000000257        0x5 /tmp/cc5Ptiuf.o
                                         0x112 (size before relaxing)
  .debug_line_str
-                0x000000000000025c        0x7 /tmp/ccpIAT4o.o
+                0x000000000000025c        0x7 /tmp/ccEHqubQ.o
                                          0x78 (size before relaxing)
  .debug_line_str
-                0x0000000000000263       0x26 /tmp/ccJ5Xrm3.o
+                0x0000000000000263       0x26 /tmp/cc3wvKSl.o
                                         0x1b1 (size before relaxing)
  .debug_line_str
-                0x0000000000000289        0xc /tmp/ccruIdOY.o
+                0x0000000000000289        0xc /tmp/ccX9t3Oq.o
                                         0x151 (size before relaxing)
  .debug_line_str
-                0x0000000000000295       0x40 /tmp/ccQEej4D.o
+                0x0000000000000295       0x40 /tmp/ccvod27j.o
                                         0x1a7 (size before relaxing)
  .debug_line_str
-                0x00000000000002d5       0x1c /tmp/ccs27uSi.o
+                0x00000000000002d5       0x1c /tmp/ccfsgwqO.o
                                         0x198 (size before relaxing)
  .debug_line_str
-                0x00000000000002f1       0x1a /tmp/ccwz0kGq.o
+                0x00000000000002f1       0x1a /tmp/ccwZ7Kc8.o
                                         0x177 (size before relaxing)
  .debug_line_str
-                0x000000000000030b       0x16 /tmp/ccE89tlP.o
+                0x000000000000030b       0x16 /tmp/ccyjlVb8.o
                                         0x1a9 (size before relaxing)
  .debug_line_str
-                0x0000000000000321        0xd /tmp/ccQp5AQa.o
+                0x0000000000000321        0xd /tmp/cchLYi8j.o
                                         0x194 (size before relaxing)
  .debug_line_str
-                0x000000000000032e       0x11 /tmp/ccDJFFrp.o
+                0x000000000000032e       0x11 /tmp/cc5wuUrI.o
                                         0x1a5 (size before relaxing)
 
 .debug_loclists
@@ -928,7 +928,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000000000       0x3d
  *(.debug_rnglists)
  .debug_rnglists
-                0x0000000000000000       0x3d /tmp/cc2axFbv.o
+                0x0000000000000000       0x3d /tmp/ccfSDrCv.o
 
 .debug_str_offsets
  *(.debug_str_offsets)
