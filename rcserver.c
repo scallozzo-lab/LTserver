@@ -256,7 +256,10 @@ int _Send2EQ(struct sockaddr_in *txaddr, uint8_t *txbuf, uint16_t txlen)
     //dest_addr.sin_port = htons(DEST_PORT);  // DNS port
 
     //dest_addr.sin_port = htons(cant);  // DNS port
-   
+#ifdef _DEBUG_RCSERVER
+    printf("[_Send2EQ] Tx size %d\n", txlen);
+#endif
+
     // Send the UDP packet
     if (sendto(sockfd, txbuf, txlen, 0, (struct sockaddr*)txaddr, sizeof(struct sockaddr)) == -1) 
     {
@@ -287,7 +290,7 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
         {
             stRxLTHubStatus *p_stRxHubStatus = (stRxLTHubStatus *)Rxbuffer;
             stTxLTHubStatus TxHubStatus = {0};
-
+        
 #ifdef _DEBUG_RCSERVER
             printf("[_ProcRx] - LT_CMD_HUB_STATUS\n");
             printf("p_stRxHubStatus->Seq %02X\n", p_stRxHubStatus->Seq);
@@ -364,6 +367,8 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                             
                             TxLTMdxCfg.Crc = crc_ccitt((uint8_t*)&TxLTMdxCfg, sizeof(TxLTMdxCfg) - sizeof(TxLTMdxCfg.Crc));
                             
+                            printf("SEND MDX CFG size = %zu\n", sizeof(TxLTMdxCfg));
+
                             if(_Send2EQ(rxaddr, (uint8_t*)&TxLTMdxCfg, sizeof(TxLTMdxCfg)))
                             {
                                 _log("[_ProcRx] ERROR-> Tx LT_CMD_MDX_CFG a LT IP:%s\n\r", ip_address);
@@ -416,25 +421,44 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 stDb_T_devstate *p_devstate = _Stfind_Devstate(pdev_eqid->light_id);
                 if(p_devstate)
                 {
-                    printf("RGB0 = %d %u %u %u\n",
+                    printf("RGB0 = %d %u %u %u %u \n",
                         p_devstate->rgb[0].enable,
                         p_devstate->rgb[0].r,
                         p_devstate->rgb[0].g,
-                        p_devstate->rgb[0].b);
+                        p_devstate->rgb[0].b,
+                        p_devstate->rgb[0].w);
 
-                    printf("RGB1 = %d %u %u %u\n",
+                    printf("RGB1 = %d %u %u %u %u\n",
                         p_devstate->rgb[1].enable,
                         p_devstate->rgb[1].r,
                         p_devstate->rgb[1].g,
-                        p_devstate->rgb[1].b);
+                        p_devstate->rgb[1].b,
+                        p_devstate->rgb[1].w);
 
-                    printf("RGB2 = %d %u %u %u\n",
+                    printf("RGB2 = %d %u %u %u %u\n",
                         p_devstate->rgb[2].enable,
                         p_devstate->rgb[2].r,
                         p_devstate->rgb[2].g,
-                        p_devstate->rgb[2].b);
+                        p_devstate->rgb[2].b,
+                        p_devstate->rgb[2].w);
 
-                    memcpy(&TxHubStatus.DevbitList[1], (uint8_t*)p_devstate->rgb, sizeof(TxHubStatus.DevbitList) - 1);
+                    printf("RGB3 = %d %u %u %u %u\n",
+                        p_devstate->rgb[3].enable,
+                        p_devstate->rgb[3].r,
+                        p_devstate->rgb[3].g,
+                        p_devstate->rgb[3].b,
+                        p_devstate->rgb[3].w);
+
+                    printf("REFLECTOR 1 %d %d\n",
+                        p_devstate->reflector1_enable,
+                        p_devstate->reflector2_on);
+                   
+                    printf("REFLECTOR 2 %d %d\n",
+                        p_devstate->reflector2_enable,
+                        p_devstate->reflector2_on);
+                   
+
+                    memcpy(&TxHubStatus.DevbitList[1], (uint8_t*)p_devstate->rgb, (sizeof(TxHubStatus.DevbitList) + sizeof(TxHubStatus.Dummy)) - 1);
                     if(p_devstate->mode != RGB_MODE_AUTO)
                     {
                         // Modo manual
@@ -468,6 +492,8 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             GetDateTime(&TxHubStatus.rtc);
           
             TxHubStatus.Crc = crc_ccitt((uint8_t*)&TxHubStatus, sizeof(TxHubStatus) - sizeof(TxHubStatus.Crc));
+            
+            printf("tx size %d\n", sizeof(TxHubStatus));
             
             if(_Send2EQ(rxaddr, (uint8_t*)&TxHubStatus, sizeof(TxHubStatus)))
             {

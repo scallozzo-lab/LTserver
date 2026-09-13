@@ -265,6 +265,7 @@ typedef struct __attribute__((packed))
     uint8_t DevAttached;
     uint8_t DevDisabled;
     uint8_t DevbitList[13];
+    uint8_t Dummy[12];                   // Reservado (ojo en modo dmx512 viene data junto con DevbitList)
     uint8_t HubVer[3];                   // Versión actual de NetHub (para actualizar)
     uint8_t LTVer[3];                   // Versión actual de LTX (para actualizar)
 
