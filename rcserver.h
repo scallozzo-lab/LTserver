@@ -8,7 +8,7 @@
 
 /*---------------------------Opciones de Compilación -----------------------------------------------------------*/
 #define _MAXCALENDARLST 5
-//#define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
+#define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
 //#define _TEST_DB
 
 //#define _TEST_DB_DEVSTATE

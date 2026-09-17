@@ -342,7 +342,7 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             // Si el dispositivo fue encontrado:
             if (pdev_eqid)
             {
-                TxHubStatus.SStatus = SS_STS_ONLINE;
+                TxHubStatus.SStatus |= SS_STS_ONLINE;
                 printf("devtype %02X\n ", pdev_eqid->devtype);
                 
                 if(pdev_eqid->devtype == 0x40) 
