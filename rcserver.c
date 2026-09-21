@@ -32,6 +32,7 @@
 #include "db_devcalendar.h"
 #include "loop2app.h"
 #include "nethubbin.h"
+#include "logdevice.h"
 
 
 int sockfd = 0;
@@ -309,8 +310,17 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             printf("p_stRxHubStatus->HubEvent %02X\n", p_stRxHubStatus->HubEvent);    
             printf("p_stRxHubStatus->TimeRunning (%d)Seg\n", p_stRxHubStatus->TimeRunning);
             
-            printf("p_stRxHubStatus->latitude_e7 (%d)\n", p_stRxHubStatus->latitude_e7);
-            printf("p_stRxHubStatus->longitude_e7 (%d)\n", p_stRxHubStatus->longitude_e7);
+            if(p_stRxHubStatus->HubEvent == 0)
+            {
+                printf("p_stRxHubStatus->latitude_e7 (%d)\n", p_stRxHubStatus->extra.gps.latitude_e7);
+                printf("p_stRxHubStatus->longitude_e7 (%d)\n", p_stRxHubStatus->extra.gps.longitude_e7);
+            }
+            else if(p_stRxHubStatus->HubEvent == 1)
+            {
+                printf("p_stRxHubStatus->netvoltage (%d)V\n", p_stRxHubStatus->extra.netvalues.netvoltage);
+                printf("p_stRxHubStatus->netcurrent (%d)mA\n", p_stRxHubStatus->extra.netvalues.netcurrent);
+            }
+             
             printf("p_stRxHubStatus->crtc %02d/%02d/%04d %02d:%02d:%02d\n",
                                                                           p_stRxHubStatus->rtc.day,
                                                                           p_stRxHubStatus->rtc.month,
@@ -324,7 +334,16 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             printf("p_stRxHubStatus->FwVersion %04X\n", p_stRxHubStatus->FwVersion);
             printf("p_stRxHubStatus->Crc %04X\n", p_stRxHubStatus->Crc);
 #endif            
-        
+
+            // Si estamos recibiendo netvalues
+            if(p_stRxHubStatus->HubEvent == 1)
+            {    
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->HubStatus (%02X)\n", p_stRxHubStatus->HubStatus);
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->TimeRunning (%d)Seg\n", p_stRxHubStatus->TimeRunning);
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->netvoltage (%d)V\n", p_stRxHubStatus->extra.netvalues.netvoltage);
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->netcurrent (%d)mA\n", p_stRxHubStatus->extra.netvalues.netcurrent);
+            }
+
             TxHubStatus.flag = 0xA5;
             TxHubStatus.len = sizeof(TxHubStatus);
             TxHubStatus.Cmd = Rxbuffer[3] | RC_CMD_SERVERSIDE;
@@ -554,6 +573,9 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             printf("ver = %02X%02X%02X\n", p_RxLTFwFrame->ver[0], p_RxLTFwFrame->ver[1], p_RxLTFwFrame->ver[2]);
 #endif
 
+            _logDevice(p_RxLTFwFrame->HubID, "LT_CMD_FW_FRAME frame nr(%d)\n", p_RxLTFwFrame->framenr);
+            _logDevice(p_RxLTFwFrame->HubID, "Ver %02X%02X%02X\n", p_RxLTFwFrame->ver[0], p_RxLTFwFrame->ver[1], p_RxLTFwFrame->ver[2]);
+            
             TxLTFwFrame.flag = 0xA5;
             //TxLTFwFrame.len = sizeof(TxLTFwFrame);
             TxLTFwFrame.Cmd = Rxbuffer[3] | RC_CMD_SERVERSIDE;

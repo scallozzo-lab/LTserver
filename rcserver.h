@@ -9,6 +9,7 @@
 /*---------------------------Opciones de Compilación -----------------------------------------------------------*/
 #define _MAXCALENDARLST 5
 #define _OPT_FIRMWARE_UPDATE_ENABLE         // Habilita la actualización de firmware de los dispositivos NetHub
+#define _OPT_LOGDEVICE
 //#define _TEST_DB
 
 //#define _TEST_DB_DEVSTATE
@@ -226,6 +227,25 @@ typedef enum
     RTC_WEEKDAY_SATURDAY
 } rtc_weekday_t;
 
+typedef union __attribute__((packed))
+{
+    struct
+    {
+        int32_t latitude_e7;
+        int32_t longitude_e7;
+    } gps;
+
+    struct
+    {
+        uint16_t netvoltage;
+        uint32_t netcurrent;
+        uint16_t nu;
+    } netvalues;
+
+    uint8_t raw[8];
+
+} stHubExtraData;
+
 
 // Estructuras para hub-status
 typedef struct __attribute__((packed))
@@ -240,8 +260,9 @@ typedef struct __attribute__((packed))
     uint8_t HubEvent;   // <> 0 = Event
     uint32_t TimeRunning;
 
-    int32_t latitude_e7;
-    int32_t longitude_e7;
+    stHubExtraData extra;
+    //int32_t latitude_e7;
+    //int32_t longitude_e7;
     rtc_soft_t rtc;
   
     uint8_t dmxseq;
