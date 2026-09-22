@@ -319,6 +319,8 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
             {
                 printf("p_stRxHubStatus->netvoltage (%d)V\n", p_stRxHubStatus->extra.netvalues.netvoltage);
                 printf("p_stRxHubStatus->netcurrent (%d)mA\n", p_stRxHubStatus->extra.netvalues.netcurrent);
+                printf("p_stRxHubStatus->mode (%d)\n", p_stRxHubStatus->extra.netvalues.mode);
+                printf("p_stRxHubStatus->prgnr (%d)\n", p_stRxHubStatus->extra.netvalues.prognr);
             }
              
             printf("p_stRxHubStatus->crtc %02d/%02d/%04d %02d:%02d:%02d\n",
@@ -342,6 +344,8 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
                 _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->TimeRunning (%d)Seg\n", p_stRxHubStatus->TimeRunning);
                 _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->netvoltage (%d)V\n", p_stRxHubStatus->extra.netvalues.netvoltage);
                 _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->netcurrent (%d)mA\n", p_stRxHubStatus->extra.netvalues.netcurrent);
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->CurrentMode (%d)\n", p_stRxHubStatus->extra.netvalues.mode);
+                _logDevice(p_stRxHubStatus->HubID, "p_stRxHubStatus->CurrentPrg (%d)\n", p_stRxHubStatus->extra.netvalues.prognr);
             }
 
             TxHubStatus.flag = 0xA5;
