@@ -1,8 +1,9 @@
-[2026-09-21 19:19:19] RCServer Version 0.3
-[2026-09-21 19:19:19] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
-[2026-09-21 19:19:19] [_LoadNetHubBin] Tamaño: 38100 bytes
-[2026-09-21 19:19:19] [_LoadNetHubBin] FW.Header->
-[2026-09-21 19:19:19] len 000094D4
-[2026-09-21 19:19:19] signature F717A8FB
-[2026-09-21 19:19:19] FW.Header crc calc F717A8FB
-[2026-09-21 19:19:19] [_LoadNetHubBin] Firmware NetHUB V1.9 (FWH) OK
+[2026-09-26 02:18:18] RCServer Version 0.3
+[2026-09-26 02:18:18] [_LoadNetHubBin] Archivo: ./bins/firmware.bin
+[2026-09-26 02:18:18] [_LoadNetHubBin] Tamaño: 39052 bytes
+[2026-09-26 02:18:18] [_LoadNetHubBin] FW.Header->
+[2026-09-26 02:18:18] len 0000988C
+[2026-09-26 02:18:18] signature E23AF7A4
+[2026-09-26 02:18:18] FW.Header crc calc E23AF7A4
+[2026-09-26 02:18:18] [_LoadNetHubBin] Firmware NetHUB V2.0 (FWH) OK
+[2026-09-26 02:18:18] RCServer activo puerto: 5000...
