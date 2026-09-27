@@ -2,7 +2,10 @@
 /*
  Servidor LTserver  
  Autor: SCALLOZZO                                                                 
-  
+
+     Ver 0.4 [27.08.2026] SCallozzo
+    * Se agrega ver tabla 1.7 y actualización de estados de monumentos. (_dbupdate_devstate)
+
     Ver 0.3 [19.08.2026] SCallozzo
     * Se comienza a agregar lectura y escritura de tablas
 
@@ -515,8 +518,31 @@ void _ProcRx(struct sockaddr_in *rxaddr, uint8_t *Rxbuffer, uint16_t RxLen)
           
             TxHubStatus.Crc = crc_ccitt((uint8_t*)&TxHubStatus, sizeof(TxHubStatus) - sizeof(TxHubStatus.Crc));
             
-            printf("tx size %d\n", sizeof(TxHubStatus));
+            //printf("tx size %d\n", sizeof(TxHubStatus));
             
+            // Actualiza la información del dispositivo en base de datos (ojo hay que ponerlo un proceso aparte para controlar falla)
+            if(p_stRxHubStatus->HubEvent == 1)
+            {    
+                stDb_T_devstate_telemetry telemetry;
+
+                if(p_stRxHubStatus->extra.netvalues.prognr)
+                    memcpy(telemetry.status, "on", 3);
+                else memcpy(telemetry.status, "off", 4);
+                
+                memcpy(&telemetry.device_date_time, &p_stRxHubStatus->rtc, sizeof(telemetry.device_date_time));
+                
+                telemetry.auto_program = p_stRxHubStatus->extra.netvalues.prognr;
+
+                telemetry.power_watts = p_stRxHubStatus->extra.netvalues.netvoltage * (p_stRxHubStatus->extra.netvalues.netcurrent/1000.0);
+                telemetry.voltage = p_stRxHubStatus->extra.netvalues.netvoltage;
+                telemetry.temperature_c = 25;
+
+                telemetry.burn_hours = p_stRxHubStatus->TimeRunning;
+            
+                _dbupdate_devstate(pdev_eqid->light_id, &telemetry);
+            }
+
+
             if(_Send2EQ(rxaddr, (uint8_t*)&TxHubStatus, sizeof(TxHubStatus)))
             {
                 _log("[_ProcRx] ERROR-> Tx LT_CMD_HUB_STATUS a LT IP:%s\n\r", ip_address);

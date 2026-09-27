@@ -2,6 +2,9 @@
 -- LTServer DB Ver 1.7 DATABASE
 -- PostgreSQL Script
 
+-- VERSION 1.7 ->
+-- Se agrega users con login de verdad.
+
 -- VERSION 1.6 ->
 --  - Agregada tabla de dispositivos
 --  - Agregado de devtype (int2) a devstate
@@ -99,30 +102,6 @@ CREATE TABLE db_version (
 );
 INSERT INTO db_version (version) VALUES ('1.7');
 
--- =========================================================
--- TABLE: users
--- =========================================================
-CREATE TABLE users (
-    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username      VARCHAR(64) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    role          VARCHAR(32) DEFAULT 'operator',
-    created_at    TIMESTAMP NOT NULL DEFAULT NOW()
-);
--- =========================================================
--- TABLE: Creación USUARIO ADMIN / luxiva2026
--- =========================================================
-
-INSERT INTO users (
-    username,
-    password_hash,
-    role
-)
-VALUES (
-    'admin',
-    '$2b$12$u11j.IXHAR5IQxtEYWmHj.SCP8SmVb.tB7Pdg0vyOZynh1Ax29776',
-    'admin'
-);
 
 -- =========================================================
 -- TABLE: district
@@ -132,12 +111,143 @@ CREATE TABLE district (
 
     name            VARCHAR(100) UNIQUE NOT NULL,
 
+    -- Centro (Downtown) / vista inicial
     center_lat      DOUBLE PRECISION,
     center_lng      DOUBLE PRECISION,
+
+    -- Norte (Uptown)
+    north_lat       DOUBLE PRECISION,
+    north_lng       DOUBLE PRECISION,
+
+    -- Sur (falta definir)
+    south_lat       DOUBLE PRECISION,
+    south_lng       DOUBLE PRECISION,
+
+    -- Este (East_side)
+    east_lat        DOUBLE PRECISION,
+    east_lng        DOUBLE PRECISION,
+
+    -- Oeste (West side)
+    west_lat        DOUBLE PRECISION,
+    west_lng        DOUBLE PRECISION,
+
     default_zoom    INTEGER DEFAULT 14,
 
     created_at      TIMESTAMP DEFAULT NOW()
 );
+
+-- =========================================================
+-- DISTRITO DEFAULT
+-- =========================================================
+INSERT INTO district (
+    name,
+    center_lat,
+    center_lng,
+    north_lat,
+    north_lng,
+    south_lat,
+    south_lng,
+    east_lat,
+    east_lng,
+    west_lat,
+    west_lng,
+    default_zoom
+)
+VALUES (
+    'Puerto Madryn',
+    -42.7672, -65.0367,   -- Centro
+    -42.529986, -65.043142,   -- Norte
+    -42.836376, -65.054128,   -- Sur
+    -42.695231, -64.995763,   -- Este
+    -42.684127, -65.335653,   -- Oeste
+    14
+    
+);
+
+-- =========================================================
+-- TABLE: users
+-- =========================================================
+CREATE TABLE users (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username            VARCHAR(64) UNIQUE NOT NULL,
+    password_hash       TEXT NOT NULL,
+    role                VARCHAR(32) DEFAULT 'operador',
+
+    -- Distrito que se selecciona al iniciar sesión
+    default_district_id INTEGER REFERENCES district(id),
+
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- =========================================================
+-- USUARIO ADMIN / luxiva2026
+-- =========================================================
+INSERT INTO users (
+    username,
+    password_hash,
+    role,
+    default_district_id
+)
+VALUES (
+    'admin',
+    '$2b$12$u11j.IXHAR5IQxtEYWmHj.SCP8SmVb.tB7Pdg0vyOZynh1Ax29776',
+    'admin',
+    (SELECT id FROM district WHERE name = 'Puerto Madryn')
+),
+-- USUARIO pmadryn / madryn2026
+(    
+    'pmadryn',
+    '$2b$12$PgYaN.OGCqHMG.KX/lCds.YCFaCfCpBBZ7ShxvIB5ic5g8mJEJue2',
+    'operador',
+    (SELECT id FROM district WHERE name = 'Puerto Madryn')
+);
+
+
+
+-- =========================================================
+-- TABLE: user_district
+-- =========================================================
+CREATE TABLE user_district (
+    user_id UUID NOT NULL
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    district_id INTEGER NOT NULL
+        REFERENCES district(id)
+        ON DELETE CASCADE,
+
+    PRIMARY KEY (user_id, district_id)
+);
+
+-- =========================================================
+-- PERMISOS ADMIN -> PUERTO MADRYN
+-- =========================================================
+INSERT INTO user_district (
+    user_id,
+    district_id
+)
+SELECT
+    u.id,
+    d.id
+FROM users u
+CROSS JOIN district d
+WHERE u.username = 'admin'
+  AND d.name = 'Puerto Madryn';
+
+-- =========================================================
+-- PERMISOS USUARIOS -> PUERTO MADRYN
+-- =========================================================
+INSERT INTO user_district (
+    user_id,
+    district_id
+)
+SELECT
+    u.id,
+    d.id
+FROM users u
+CROSS JOIN district d
+WHERE u.username IN ('admin', 'pmadryn')
+  AND d.name = 'Puerto Madryn';
 
 -- =========================================================
 -- TABLE: zone

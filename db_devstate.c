@@ -1028,6 +1028,201 @@ void _InitDb_devstate(void)
 }
 
 
+int _dbupdate_devstate(
+    const char *light_id,
+    const stDb_T_devstate_telemetry *pdata
+)
+{
+    if (light_id == NULL || pdata == NULL)
+        return _DB_STS_ERR_STRUCT;
+
+
+    PGconn *conn = PQconnectdb(_DB_ADDRESS);
+
+    if (PQstatus(conn) != CONNECTION_OK)
+    {
+        fprintf(stderr,
+                "[_dbupdate_devstate] Connection to database failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbupdate_devstate] Connection to database failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CONN;
+    }
+
+
+    /*
+     * Conversión de valores numéricos para PQexecParams().
+     */
+
+    char auto_program[16];
+    char power_watts[32];
+    char voltage[32];
+    char temperature_c[32];
+    char burn_hours[32];
+    char device_date_time[32];
+
+
+    snprintf(auto_program,
+             sizeof(auto_program),
+             "%d",
+             pdata->auto_program);
+
+    snprintf(power_watts,
+             sizeof(power_watts),
+             "%.2f",
+             pdata->power_watts);
+
+    snprintf(voltage,
+             sizeof(voltage),
+             "%.2f",
+             pdata->voltage);
+
+    snprintf(temperature_c,
+             sizeof(temperature_c),
+             "%.2f",
+             pdata->temperature_c);
+
+    snprintf(burn_hours,
+             sizeof(burn_hours),
+             "%llu",
+             (unsigned long long)pdata->burn_hours);
+
+    snprintf(
+        device_date_time,
+        sizeof(device_date_time),
+        "%04u-%02u-%02u %02u:%02u:%02u-03",
+        (unsigned)pdata->device_date_time.year,
+        (unsigned)pdata->device_date_time.month,
+        (unsigned)pdata->device_date_time.day,
+        (unsigned)pdata->device_date_time.hour,
+        (unsigned)pdata->device_date_time.min,
+        (unsigned)pdata->device_date_time.sec
+    );
+
+
+    /*
+     * Parámetros:
+     *
+     * $1 light_id
+     * $2 status
+     * $3 device_date_time
+     * $4 auto_program
+     * $5 power_watts
+     * $6 voltage
+     * $7 temperature_c
+     * $8 burn_hours
+     */
+
+    const char *paramValues[] =
+    {
+        light_id,
+        pdata->status,
+        device_date_time,
+        auto_program,
+        power_watts,
+        voltage,
+        temperature_c,
+        burn_hours
+    };
+
+
+    const char *query =
+        "UPDATE devstate SET "
+        "status = $2, "
+        "device_date_time = $3, "
+        "auto_program = $4, "
+        "power_watts = $5, "
+        "voltage = $6, "
+        "temperature_c = $7, "
+        "burn_hours = $8, "
+        "last_seen = NOW(), "
+        "updated_at = NOW() "
+        "WHERE light_id = $1";
+
+
+    PGresult *res = PQexecParams(
+        conn,
+        query,
+        8,
+        NULL,
+        paramValues,
+        NULL,
+        NULL,
+        0
+    );
+
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK)
+    {
+        fprintf(stderr,
+                "[_dbupdate_devstate] Query execution failed: %s\n",
+                PQerrorMessage(conn));
+
+        _log("[_dbupdate_devstate] Query execution failed: %s\n",
+             PQerrorMessage(conn));
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_CMD;
+    }
+
+
+    /*
+     * Verificar que se actualizó exactamente un dispositivo.
+     */
+
+    if (PQcmdTuples(res) == NULL ||
+        atoi(PQcmdTuples(res)) != 1)
+    {
+        printf("[_dbupdate_devstate] Device not found: %s\n",
+               light_id);
+
+        _log("[_dbupdate_devstate] Device not found: %s\n",
+             light_id);
+
+        PQclear(res);
+        PQfinish(conn);
+
+        return _DB_STS_ERR_STRUCT;
+    }
+
+
+#ifdef _DEBUG_DB_READ
+
+    printf(
+        "[_dbupdate_devstate] Updated: %s "
+        "status=%s "
+        "datetime=%s "
+        "program=%d "
+        "power=%.2fW "
+        "voltage=%.2fV "
+        "temp=%.2fC "
+        "hours=%llu\n",
+        light_id,
+        pdata->status,
+        device_date_time,
+        pdata->auto_program,
+        pdata->power_watts,
+        pdata->voltage,
+        pdata->temperature_c,
+        (unsigned long long)pdata->burn_hours
+    );
+
+#endif
+
+
+    PQclear(res);
+    PQfinish(conn);
+
+    return _DB_STS_OK;
+}
+
+
 #ifdef _TEST_DB_DEVSTATE
 
 int main(void)

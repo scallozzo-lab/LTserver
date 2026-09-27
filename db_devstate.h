@@ -73,6 +73,21 @@ typedef struct
 } stDb_T_devstate_info;
 
 
+typedef struct
+{
+    char        status[16];
+    rtc_soft_t  device_date_time;
+
+    int         auto_program;
+
+    double      power_watts;
+    double      voltage;
+    double      temperature_c;
+
+    uint64_t    burn_hours;
+
+} stDb_T_devstate_telemetry;
+
 /*
  * Consulta COUNT(*) y MAX(updated_at)
  * y determina si devstate cambió.
@@ -89,6 +104,7 @@ int _dbread_table_devstate(void);
 int _dbwrite_devstate(stDb_T_devstate *pdev);
 int _dbcheck_devstate(stDb_T_devstate_info *info);
 void _InitDb_devstate(void);
+int _dbupdate_devstate(const char *light_id, const stDb_T_devstate_telemetry *pdata);
 stDb_T_devstate *_Stfind_Devstate(const char *light_id);
 
 #endif
