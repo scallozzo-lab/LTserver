@@ -77,7 +77,6 @@ typedef struct
 {
     char        status[16];
     rtc_soft_t  device_date_time;
-
     int         auto_program;
 
     double      power_watts;
